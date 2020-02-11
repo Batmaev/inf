@@ -1,0 +1,14 @@
+body{
+    background-color: black;
+}
+.rect{
+    border-radius: 15px;
+    background-color: #202020;
+    padding: 10px;
+    height: 95vh;
+    display: flex;
+    flex-direction: column;
+}
+canvas{
+    flex-grow: 1;
+}
