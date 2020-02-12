@@ -6,9 +6,47 @@
         <link rel="stylesheet" href="style.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
-    <body>
-        <template id="graphTempl">
+    <body> 
+        <div class="rect">
+            <form id="functional" style="display: flex; flex-direction: column; margin-bottom: 10px;">
+                <lable>
+                    <input type="radio" name="func" value="prabola">
+                    Парабола x[n] = 4 * r * x[n-1] * (1 - x[n-1]) 
+                </lable>
+                <lable>
+                    <input type="radio" name="func" value="exp">
+                    Экспонента x[n] = x[n-1] * exp(r * (1 - x[n]))
+                </lable>
+            </form>
+            <form id="noise">
+                <label>
+                    Уровень шума
+                    <input type="text" name="noise" value="0">
+                </label>
+            </form>
+        </div>
+        
+        <form id="singleR">
             <div class="rect">
+                <div style="display: flex">
+                    <label>
+                        Число повторений
+                        <input type="text" name="N" value="25">
+                    </label>
+                    <label>
+                        Параметр r
+                        <input type="text" name="r" value="0.5">
+                    </label>
+                    <label>
+                        Начальное значение x0
+                        <input type="text" name="x0" value="0.5">
+                    </label>
+                    <input type="submit">
+                </div>
+            </div>
+        </form>
+        <template id="graphTempl">
+            <div class="big rect">
                 <div class="head"></div>
                 <canvas></canvas>
             </div>
@@ -17,8 +55,9 @@
         <graph-element name="Относительная погрешность = f(n)" id="err"></graph-element>
         <graph-element name="Х_уст = f(r)" id="bifurk"></graph-element>
     </body>
-    
+
     <script src="calculations.js"></script>
     <script src="graph-element.js"></script>
     <script src="main.js"></script>
+    <script src="events.js"></script>
 </html>

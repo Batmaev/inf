@@ -7,11 +7,13 @@ body{
     border-radius: 15px;
     background-color: #202020;
     padding: 10px;
-    height: 95vh;
+    margin: 10px;
     display: flex;
     flex-direction: column;
-    margin: 10px;
 }
 canvas{
     flex-grow: 1;
+}
+.big{
+    height: 95vh;
 }

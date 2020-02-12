@@ -1,9 +1,22 @@
-function simulate(N, r, x0){
+simulate = parabolic
+noise_level = 0
+
+function parabolic(N, r, x0){
     let array = new Array(N)
     array[0] = x0
 
     for(let k = 1; k < N; ++k){
-        array[k] = 4 * r * array[k - 1] * (1 - array[k - 1])
+        array[k] = 4 * r * array[k - 1] * (1 - array[k - 1]) + noise_level * Math.random()
+    }
+    return array
+}
+
+function exponential(N, r, x0) {
+    let array = new Array(N)
+    array[0] = x0
+
+    for(let k = 1; k < N; ++k){
+        array[k] = array[k -1] * Math.exp(r * (1 - array[k - 1])) + noise_level * Math.random()
     }
     return array
 }
