@@ -41,7 +41,7 @@ class Graph extends HTMLElement{
         this.querySelector(".head").innerHTML = this.getAttribute("name")
     }
 
-    drawGraph(Xarr, Yarr, maxY, minY){
+    drawGraph(XYpair, maxY, minY, lines){
         const cnv = this.querySelector("canvas")
         let ctx = cnv.getContext("2d")
         
@@ -50,16 +50,24 @@ class Graph extends HTMLElement{
         cnv.height = height
         cnv.width = width
 
-        let data = new DataFor1Graph(Xarr, Yarr, width, height, maxY, minY)
+        let data = new DataFor1Graph(XYpair.X, XYpair.Y, width, height, maxY, minY)
 
-        ctx.beginPath()
-        ctx.moveTo(data.screenX(0), data.screenY(0))
+        if(lines){
+            ctx.beginPath()
+            ctx.moveTo(data.screenX(0), data.screenY(0))
 
-        for(let k = 1; k < N; k++){
+            for(let k = 1; k < data.N; k++){
             ctx.lineTo(data.screenX(k), data.screenY(k))
+            }
+            ctx.strokeStyle = "rgba(255, 255, 255, 1)"
+            ctx.stroke()
         }
-        ctx.strokeStyle = "rgba(255, 255, 255, 1)"
-        ctx.stroke()
+        else{
+            ctx.fillStyle = "rgba(255, 255, 255, 1)"
+            for(let k = 0; k < data.N; k++){
+                ctx.fillRect(data.screenX(k), data.screenY(k), 2, 2)
+            }
+        }
     }
 }
 customElements.define("graph-element", Graph);

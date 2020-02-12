@@ -1,6 +1,7 @@
 body{
     background-color: black;
     color: white;
+    margin: 0px;
 }
 .rect{
     border-radius: 15px;
@@ -9,6 +10,7 @@ body{
     height: 95vh;
     display: flex;
     flex-direction: column;
+    margin: 10px;
 }
 canvas{
     flex-grow: 1;
