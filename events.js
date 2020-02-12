@@ -1,5 +1,5 @@
 const SingleRform = document.forms.singleR
-SingleRform.addEventListener("submit", main.bind(this))
+SingleRform.addEventListener("submit", simulationFor1R.bind(this))
 
 const functionalForm = document.forms.functional.func
 functionalForm[0].addEventListener("change", function(event){ simulate = parabolic })
@@ -11,10 +11,5 @@ noiseForm.addEventListener("submit", function(event){
     noise_level = Number(noiseForm.noise.value)
 })
 
-
-function changeFunction(event){
-    //event.preventDefault()
-    alert(0)
-}
-
-
+const multipleRs = document.forms.multipleRs
+multipleRs.addEventListener("submit", bifurkation.bind(this))

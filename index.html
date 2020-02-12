@@ -10,7 +10,7 @@
         <div class="rect">
             <form id="functional" style="display: flex; flex-direction: column; margin-bottom: 10px;">
                 <lable>
-                    <input type="radio" name="func" value="prabola">
+                    <input type="radio" name="func" value="prabola" checked>
                     Парабола x[n] = 4 * r * x[n-1] * (1 - x[n-1]) 
                 </lable>
                 <lable>
@@ -28,14 +28,14 @@
         
         <form id="singleR">
             <div class="rect">
-                <div style="display: flex">
+                <div class="horizontal">
                     <label>
                         Число повторений
                         <input type="text" name="N" value="25">
                     </label>
                     <label>
                         Параметр r
-                        <input type="text" name="r" value="0.5">
+                        <input type="text" name="r" value="0.7">
                     </label>
                     <label>
                         Начальное значение x0
@@ -53,6 +53,27 @@
         </template>
         <graph-element name="X_n = f(n)" id="x_n"></graph-element>
         <graph-element name="Относительная погрешность = f(n)" id="err"></graph-element>
+        <div class="rect">
+            <form id="multipleRs" class="horizontal">
+                <label>
+                    Количество значений r
+                    <input type="text" name="N" value="100">
+                </label>
+                <label>
+                    Минимальное значение r
+                    <input type="text" name="R_min" value="0.6">
+                </label>
+                <label>
+                    Максимальное значение r
+                    <input type="text" name="R_max" value="1">
+                </label>
+                <label>
+                    Начальное значение x0
+                    <input type="text" name="x0" value="0.5">
+                </label>
+                <input type="submit">
+            </form>
+        </div>
         <graph-element name="Х_уст = f(r)" id="bifurk"></graph-element>
     </body>
 
