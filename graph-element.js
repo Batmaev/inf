@@ -1,5 +1,5 @@
 class DataFor1Graph{
-    constructor(Xarr, Yarr, width, height, userMaxY, userMinY){
+    constructor(Xarr, Yarr, width, height, userMinY, userMaxY){
         this.width = width
         this.height = height
 
@@ -9,17 +9,13 @@ class DataFor1Graph{
         this.N = Math.min(Xarr.length, Yarr.length)
         this.maxX = Math.max.apply(null, Xarr)
         this.minX = Math.min.apply(null, Xarr)
-        if(userMaxY === undefined){
-            this.maxY = Math.max.apply(null, Yarr)
+        this.maxY = Math.max.apply(null, Yarr)
+        this.minY = Math.min.apply(null, Yarr)
+        if(userMaxY !== undefined){
+            this.maxY = Math.max(this.maxY, userMaxY)
         }
-        else{
-            this.maxY = userMaxY
-        }
-        if(userMinY === undefined){
-            this.minY = Math.min.apply(null, Yarr)
-        }
-        else{
-            this.minY = userMinY
+        if(userMinY !== undefined){
+            this.minY = Math.min(this.minY, userMinY)
         }
         this.ampX = this.maxX - this.minX
         this.ampY = this.maxY - this.minY
@@ -41,7 +37,7 @@ class Graph extends HTMLElement{
         this.querySelector(".head").innerHTML = this.getAttribute("name")
     }
 
-    drawGraph(XYpair, maxY, minY, lines){
+    drawGraph(XYpair, lines, minY, maxY){
         const cnv = this.querySelector("canvas")
         let ctx = cnv.getContext("2d")
         
@@ -50,7 +46,7 @@ class Graph extends HTMLElement{
         cnv.height = height
         cnv.width = width
 
-        let data = new DataFor1Graph(XYpair.X, XYpair.Y, width, height, maxY, minY)
+        let data = new DataFor1Graph(XYpair.X, XYpair.Y, width, height, minY, maxY)
 
         if(lines){
             ctx.beginPath()
@@ -65,7 +61,7 @@ class Graph extends HTMLElement{
         else{
             ctx.fillStyle = "rgba(255, 255, 255, 1)"
             for(let k = 0; k < data.N; k++){
-                ctx.fillRect(data.screenX(k), data.screenY(k), 2, 2)
+                ctx.fillRect(data.screenX(k) - 1, data.screenY(k) - 1, 2, 2)
             }
         }
     }

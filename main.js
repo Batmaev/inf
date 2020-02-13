@@ -9,12 +9,12 @@ function simulationFor1R(event){
     const x_n_obj = document.getElementById("x_n")
     let Yarr = simulate(N, r, x0)
     let Xarr = simpleArray(N)
-    x_n_obj.drawGraph({X: Xarr, Y: Yarr}, 1, 0, true)
+    x_n_obj.drawGraph({X: Xarr, Y: Yarr}, true, 0, 1)
 
     const err_obj = document.getElementById("err")
     let Yarr2 = simulate(N, r, x0 + diff)
     let Yarr3 = Yarr.map((value, index) => Math.abs(value - Yarr2[index])/value)
-    err_obj.drawGraph({X: Xarr, Y:Yarr3}, undefined, 0, true)
+    err_obj.drawGraph({X: Xarr, Y:Yarr3}, true, 0)
 }
 
 function bifurkation(event){
@@ -26,5 +26,5 @@ function bifurkation(event){
     
     const bifurk_obj = document.getElementById("bifurk")
     let XYPair = steadyState(N, R_min, R_max, x0)
-    bifurk_obj.drawGraph(XYPair, undefined, undefined, false)
+    bifurk_obj.drawGraph(XYPair, false, 0, 1)
 }
