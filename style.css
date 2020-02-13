@@ -27,3 +27,12 @@ label{
     display: flex;
     flex-wrap: wrap;
 }
+input{
+    background-color: #454545;
+    color: white;
+    border: none;
+    font-size: 18px;
+}
+input[type=text]{
+    width: 120px;
+}
