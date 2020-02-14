@@ -6,16 +6,18 @@
         <link rel="stylesheet" href="style.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <body> 
         <div class="rect">
             <form id="functional" style="display: flex; flex-direction: column; margin-bottom: 10px;">
                 <lable>
                     <input type="radio" name="func" value="prabola" checked>
-                    Парабола x[n] = 4 * r * x[n-1] * (1 - x[n-1]) 
+                    Парабола \(x_n = 4 \cdot r \cdot x_{n-1} \cdot (1 - x_{n-1})\)
                 </lable>
                 <lable>
                     <input type="radio" name="func" value="exp">
-                    Экспонента x[n] = x[n-1] * exp(r * (1 - x[n]))
+                    Экспонента \(x_n = x_{n-1} \cdot \exp(r \cdot (1 - x_{n-1}))\)
                 </lable>
             </form>
             <form id="noise">
