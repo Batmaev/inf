@@ -34,7 +34,8 @@ class Graph extends HTMLElement{
         this.append(graphTempl.content.cloneNode(true))
     }
     connectedCallback(){
-        this.querySelector(".head").innerHTML = this.getAttribute("name")
+        const head = this.querySelector(".head")
+        katex.render(this.getAttribute("name"), head)
     }
 
     drawGraph(XYpair, lines, minY, maxY){
