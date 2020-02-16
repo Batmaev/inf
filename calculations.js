@@ -30,8 +30,8 @@ function simpleArray(N){
     return array
 }
 
-function steadyState(N_Iterations, r_min, r_max, x0){
-    const N_r_values = 100
+function steadyState(N_r_values, r_min, r_max, x0){
+    const N_Iterations = 100
     const N_last = 80
     let arrayOfArrays = new Array(N_r_values)
     let arrayOfRvalues = new Array(N_r_values)

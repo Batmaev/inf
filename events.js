@@ -13,3 +13,4 @@ noiseForm.addEventListener("submit", function(event){
 
 const multipleRs = document.forms.multipleRs
 multipleRs.addEventListener("submit", bifurkation.bind(this))
+multipleRs.N.value = Math.floor(document.getElementById("bifurk").querySelector("canvas").getBoundingClientRect().width)

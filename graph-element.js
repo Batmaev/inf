@@ -63,8 +63,9 @@ class Graph extends HTMLElement{
         }
         else{
             ctx.fillStyle = "rgba(255, 255, 255, 1)"
+            const HALF_DOT_SIZE = 0.5
             for(let k = 0; k < data.N; k++){
-                ctx.fillRect(data.screenX(k) - 1, data.screenY(k) - 1, 2, 2)
+                ctx.fillRect(data.screenX(k) - HALF_DOT_SIZE, data.screenY(k) - HALF_DOT_SIZE, 2 * HALF_DOT_SIZE, 2 * HALF_DOT_SIZE)
             }
         }
     }
