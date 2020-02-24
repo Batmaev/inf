@@ -35,9 +35,10 @@ class Graph extends HTMLElement{
     }
     connectedCallback(){
         const head = this.querySelector(".head")
-        katex.render(this.getAttribute("name"), head, {
-            strict: false
-        })
+        // katex.render(this.getAttribute("name"), head, {
+        //     strict: false
+        // })
+        head.innerHTML = this.getAttribute("name")
     }
 
     drawGraph(XYpair, lines, minY, maxY){
