@@ -14,8 +14,8 @@ const fiboColor = "rgba(240, 240, 120, 1)"
 function main(event){
     event.preventDefault()
 
-    const N = oneForm.value
-    const seed = 32766
+    const N = 700
+    const seed = Number(document.forms.one.seed.value)
     let Xarr = simpleArray(N)
     let builtInResults = get3arrays(mathRandArray, N, 2)
     let LinCongResults = get3arrays(linearCongruent, N, seed)
