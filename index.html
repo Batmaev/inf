@@ -15,12 +15,8 @@
         <div class="rect">
             <form id="one" style="display: flex; flex-direction: column; margin-bottom: 10px;">
                 <lable>
-                    <input type="radio" name="func" value="prabola" checked>
-                    Парабола \(x_n = 4 \cdot r \cdot x_{n-1} \cdot (1 - x_{n-1})\)
-                </lable>
-                <lable>
-                    <input type="radio" name="func" value="exp">
-                    Экспонента \(x_n = x_{n-1} \cdot \exp(r \cdot (1 - x_{n-1}))\)
+                    Зерно: 
+                    <input type="text" name="Зерно" value="1">
                 </lable>
                 <input type="submit">
             </form>
@@ -35,7 +31,7 @@
         <graph-element name="Дисперсия" id="disp"></graph-element>
         <graph-element name="Стандартное отклонение" id="stdDev"></graph-element>
     </body>
-
+    <script src="randoms.js"></script>
     <script src="calculations.js"></script>
     <script src="graph-element.js"></script>
     <script src="main.js"></script>

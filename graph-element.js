@@ -1,18 +1,56 @@
-class DataFor1Graph{
-    constructor(Xarr, Yarr, width, height, userMinY, userMaxY){
+// class DataFor1Graph{
+//     constructor(Xarr, Yarr, width, height, userMinY, userMaxY){
+//         this.width = width
+//         this.height = height
+
+//         this.Xarr = Xarr
+//         this.Yarr = Yarr
+
+//         this.N = Math.min(Xarr.length, Yarr.length)
+//         this.maxX = Math.max.apply(null, Xarr)
+//         this.minX = Math.min.apply(null, Xarr)
+//         this.maxY = Math.max.apply(null, Yarr)
+//         this.minY = Math.min.apply(null, Yarr)
+//         if(userMaxY !== undefined){
+//             this.maxY = Math.max(this.maxY, userMaxY)
+//         }
+//         if(userMinY !== undefined){
+//             this.minY = Math.min(this.minY, userMinY)
+//         }
+//         this.ampX = this.maxX - this.minX
+//         this.ampY = this.maxY - this.minY
+//     }
+//     screenX(n){
+//         return (this.Xarr[n] - this.minX) / this.ampX * this.width
+//     }
+//     screenY(n){
+//         return (1 - (this.Yarr[n] - this.minY) / this.ampY) * this.height
+//     }
+// }
+
+class DataForGraphList{
+    constructor(XYpairs, width, height, userMinY, userMaxY){
         this.width = width
         this.height = height
 
-        this.Xarr = Xarr
-        this.Yarr = Yarr
+        this.maxX = this.minX = XYpairs[0].X[0]
+        this.maxY = this.minY = XYpairs[0].Y[0]
+       for(let k = 0; k < XYpairs.length; k++){
+           let Xarr = XYpairs[k].X
+           let Yarr = XYpairs[k].Y
+           for(let l = 0; l < Xarr.length; ++l){
+               let currentX = Xarr[l]
+               let currentY = Yarr[l]
 
-        this.N = Math.min(Xarr.length, Yarr.length)
-        this.maxX = Math.max.apply(null, Xarr)
-        this.minX = Math.min.apply(null, Xarr)
-        this.maxY = Math.max.apply(null, Yarr)
-        this.minY = Math.min.apply(null, Yarr)
+               this.maxX = currentX > this.maxX ? currentX : this.maxX
+               this.minX = currentX < this.minX ? currentX : this.minX
+
+               this.maxY = currentY > this.maxY ? currentY : this.maxY
+               this.minY = currentY < this.minY ? currentY : this.minY
+           }
+        }
         if(userMaxY !== undefined){
-            this.maxY = Math.max(this.maxY, userMaxY)
+           this.maxY = Math.max(this.maxY, userMaxY)
         }
         if(userMinY !== undefined){
             this.minY = Math.min(this.minY, userMinY)
@@ -20,11 +58,11 @@ class DataFor1Graph{
         this.ampX = this.maxX - this.minX
         this.ampY = this.maxY - this.minY
     }
-    screenX(n){
-        return (this.Xarr[n] - this.minX) / this.ampX * this.width
+    screenX(Xarr, n){
+        return (Xarr[n] - this.minX) / this.ampX * this.width
     }
-    screenY(n){
-        return (1 - (this.Yarr[n] - this.minY) / this.ampY) * this.height
+    screenY(Yarr, n){
+        return (1 - (Yarr[n] - this.minY) / this.ampY) * this.height
     }
 }
 
@@ -41,7 +79,8 @@ class Graph extends HTMLElement{
         head.innerHTML = this.getAttribute("name")
     }
 
-    drawGraph(XYpair, lines, minY, maxY){
+    drawGraph(XYCLs, minY, maxY){
+        //XYLs = [{X, Y, color, lines or dots}]
         const cnv = this.querySelector("canvas")
         let ctx = cnv.getContext("2d")
         
@@ -50,24 +89,32 @@ class Graph extends HTMLElement{
         cnv.height = height
         cnv.width = width
 
-        let data = new DataFor1Graph(XYpair.X, XYpair.Y, width, height, minY, maxY)
+        let data = new DataForGraphList(XYCLs, width, height, minY, maxY)
 
-        if(lines){
-            ctx.beginPath()
-            ctx.moveTo(data.screenX(0), data.screenY(0))
+        for(let k = 0; k < XYCLs.length; k++){
+            let Xarr = XYCLs[k].X
+            let Yarr = XYCLs[k].Y
 
-            for(let k = 1; k < data.N; k++){
-            ctx.lineTo(data.screenX(k), data.screenY(k))
+            if(XYCLs[k].lines){
+                ctx.beginPath()
+                ctx.moveTo(data.screenX(Xarr, 0), data.screenY(Yarr, 0))
+    
+                for(let k = 1; k < Xarr.length; k++){
+                ctx.lineTo(data.screenX(Xarr, k), data.screenY(Yarr, k))
+                }
+
+                ctx.strokeStyle = XYCLs[k].color
+                ctx.stroke()
             }
-            ctx.strokeStyle = "rgba(255, 255, 255, 1)"
-            ctx.stroke()
-        }
-        else{
-            ctx.fillStyle = "rgba(255, 255, 255, 1)"
-            const HALF_DOT_SIZE = 0.5
-            for(let k = 0; k < data.N; k++){
-                ctx.fillRect(data.screenX(k) - HALF_DOT_SIZE, data.screenY(k) - HALF_DOT_SIZE, 2 * HALF_DOT_SIZE, 2 * HALF_DOT_SIZE)
+            else{
+                ctx.fillStyle = XYCLs[k].color
+                const HALF_DOT_SIZE = 0.5
+                for(let k = 0; k < data.N; k++){
+                    ctx.fillRect(data.screenX(Xarr, k) - HALF_DOT_SIZE, data.screenY(Yarr, k) - HALF_DOT_SIZE,
+                     2 * HALF_DOT_SIZE, 2 * HALF_DOT_SIZE)
+                }
             }
+        
         }
     }
 }

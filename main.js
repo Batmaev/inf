@@ -10,18 +10,35 @@ function get3arrays(randFunc, N, seed){
 function main(event){
     event.preventDefault()
 
+    const builtInColor = "rgba(120, 120, 255, 1)"
+    const linCongColor = "rgba(255, 120, 120, 1)"
+
     const N = 700
+    const seed = 32766
     let Xarr = simpleArray(N)
     let builtInResults = get3arrays(mathRandArray, N, 2)
+    let LinCongResults = get3arrays(linearCongruent, N, seed)
 
     let expObj = document.getElementById("avg")
-    expObj.drawGraph({X: Xarr, Y: builtInResults.avg}, true, 0, 1)
+    const XYCLsForExp = [
+        {X: Xarr, Y: builtInResults.avg, color: builtInColor, lines: true},
+        {X: Xarr, Y: LinCongResults.avg, color: linCongColor, lines: true},
+    ]
+    expObj.drawGraph(XYCLsForExp, 0, 1)
 
     let dispObj = document.getElementById("disp")
-    dispObj.drawGraph({X: Xarr, Y: builtInResults.disp}, true, 0, 1)
+    const XYCLsForDisp = [
+        {X: Xarr, Y: builtInResults.disp, color: builtInColor, lines: true},
+        {X: Xarr, Y: LinCongResults.disp, color: linCongColor, lines: true},
+    ]
+    dispObj.drawGraph(XYCLsForDisp, 0, 1)
 
     let stdDevObj = document.getElementById("stdDev")
-    stdDevObj.drawGraph({X: Xarr, Y: builtInResults.stdDev}, true, 0, 1)
+    const XYCLsForStdDev = [
+        {X: Xarr, Y: builtInResults.stdDev, color: builtInColor, lines: true},
+        {X: Xarr, Y: LinCongResults.stdDev, color: linCongColor, lines: true},
+    ]
+    stdDevObj.drawGraph(XYCLsForStdDev, 0, 1)
 
 }
 
