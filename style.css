@@ -24,7 +24,8 @@ label{
     width: min-content;
     flex-grow: 1;
 }
-.horizontal{
+form{
+    margin-bottom: 3px;
     display: flex;
     flex-wrap: wrap;
 }
