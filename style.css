@@ -20,6 +20,7 @@ canvas{
 }
 label{
     margin: 20px;
+    margin-top: 10px;
     flex-shrink: 1;
     width: min-content;
     flex-grow: 1;
@@ -28,6 +29,7 @@ form{
     margin-bottom: 3px;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 input{
     background-color: #454545;
@@ -57,4 +59,5 @@ input[type=text]{
     background-color: #303030;
     border-radius: 5px;
     padding: 5px;
+    border: 0px;
 }

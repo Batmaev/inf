@@ -8,7 +8,8 @@ oneForm.addEventListener("keypress", event => {
     }
 })
 
-function setTime(){
+function setTime(event){
+    event.preventDefault()
     oneForm.seed.value = (new Date()).getTime() % 4294967296
     oneForm.dispatchEvent(new Event("submit"))
 }
