@@ -1,33 +1,3 @@
-// class DataFor1Graph{
-//     constructor(Xarr, Yarr, width, height, userMinY, userMaxY){
-//         this.width = width
-//         this.height = height
-
-//         this.Xarr = Xarr
-//         this.Yarr = Yarr
-
-//         this.N = Math.min(Xarr.length, Yarr.length)
-//         this.maxX = Math.max.apply(null, Xarr)
-//         this.minX = Math.min.apply(null, Xarr)
-//         this.maxY = Math.max.apply(null, Yarr)
-//         this.minY = Math.min.apply(null, Yarr)
-//         if(userMaxY !== undefined){
-//             this.maxY = Math.max(this.maxY, userMaxY)
-//         }
-//         if(userMinY !== undefined){
-//             this.minY = Math.min(this.minY, userMinY)
-//         }
-//         this.ampX = this.maxX - this.minX
-//         this.ampY = this.maxY - this.minY
-//     }
-//     screenX(n){
-//         return (this.Xarr[n] - this.minX) / this.ampX * this.width
-//     }
-//     screenY(n){
-//         return (1 - (this.Yarr[n] - this.minY) / this.ampY) * this.height
-//     }
-// }
-
 class DataForGraphList{
     constructor(XYpairs, width, height, userMinY, userMaxY){
         this.width = width

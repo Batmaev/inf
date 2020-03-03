@@ -13,18 +13,26 @@
     </head>
     <body> 
         <div class="rect">
-            <form id="one" style="margin-bottom: 7px;">
+            <form id="one" style="margin-bottom: 7px; display:flex">
+                <label>
+                    Число частиц:
+                    <input type="text" name="Nparticles">
+                </label>
+                <label>
+                    Вероятность поглотиться:
+                    <input type="text" name="W">
+                </label>
+                <label>
+                    Число шагов:
+                    <input type="text" name="Nsteps">
+                </label>
                 <label>
                     Зерно: 
                     <input type="text" name="seed" value="1">
                     <span class="butt" onclick="setTime()" style="color:aquamarine; font-family: sans-serif;">
                         Текущее время</span>
                 </label>
-                <label>
-                    Число испытаний:
-                    <input type="text" name="N">
-                </label>
-                <input type="submit" class="butt">
+                <span onclick="this.parentNode.dispatchEvent(new Event(`submit`))" class="butt">Пуск</span>
             </form>
             <div style="margin-left: 10px">
                 <div class="oneItem">
@@ -47,9 +55,7 @@
                 <canvas></canvas>
             </div>
         </template>
-        <graph-element name="Ожидание" id="avg"></graph-element>
-        <graph-element name="Дисперсия" id="disp"></graph-element>
-        <graph-element name="Стандартное отклонение" id="stdDev"></graph-element>
+        <graph-element name="Зависимость числа частиц от пройденного расстояния" id="avg"></graph-element>
     </body>
     <script src="randoms.js"></script>
     <script src="calculations.js"></script>

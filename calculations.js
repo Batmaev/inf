@@ -7,29 +7,18 @@ function simpleArray(N){
     return array
 }
 
-function expectation(randArr){
-    let expArr = new Array(randArr.length)
-    let sum = 0;
-    for(let k = 0; k < expArr.length; k ++){
-        sum += randArr[k]
-        expArr[k] = sum / (k + 1)
-    }
-    return expArr
-}
+function simulate(Nparticles, probabilityDisappear, Nsteps, randFunc, seed){
+    const resArr = new Array(Nsteps)
+    resArr[0] = Nparticles
 
-function dispersion1N(randArr, N, avg){
-    let sumDeviationSquares = 0
-    for(let k = 0; k < N; k++){
-        sumDeviationSquares += (randArr[k] - avg)**2 
+    for(let k = 1; k < Nsteps; ++k){
+        let randArr = randFunc(resArr[k - 1])
+        resArr[k] = 0
+        randArr.forEach(element => {
+            if(element > probabilityDisappear){
+                resArr[k] += 1
+            }
+        });
     }
-    return sumDeviationSquares / N //Это на самом деле N-1, так как отсчёт ведётся с 0
-}
-
-function dispersion(randArr, expArr){
-    let dispArr = new Array(Math.min(randArr.length, expArr.length))
-    for(let k = 1; k < dispArr.length; k++){
-        dispArr[k] = dispersion1N(randArr, k, expArr[k])
-    }
-    dispArr[0] = dispArr[1]
-    return dispArr
+    return resArr
 }
