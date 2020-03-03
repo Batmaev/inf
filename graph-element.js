@@ -81,9 +81,9 @@ class Graph extends HTMLElement{
             }
             else{
                 ctx.fillStyle = XYCLs[k].color
-                const HALF_DOT_SIZE = 0.5
-                for(let k = 0; k < data.N; k++){
-                    ctx.fillRect(data.screenX(Xarr, k) - HALF_DOT_SIZE, data.screenY(Yarr, k) - HALF_DOT_SIZE,
+                const HALF_DOT_SIZE = 3
+                for(let l = 0; l < data.lengths[k]; l++){
+                    ctx.fillRect(data.screenX(Xarr, l) - HALF_DOT_SIZE, data.screenY(Yarr, l) - HALF_DOT_SIZE,
                      2 * HALF_DOT_SIZE, 2 * HALF_DOT_SIZE)
                 }
             }
