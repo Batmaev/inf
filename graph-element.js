@@ -3,12 +3,15 @@ class DataForGraphList{
         this.width = width
         this.height = height
 
+        this.lengths = new Array(XYpairs.length)
+
         this.maxX = this.minX = XYpairs[0].X[0]
         this.maxY = this.minY = XYpairs[0].Y[0]
        for(let k = 0; k < XYpairs.length; k++){
            let Xarr = XYpairs[k].X
            let Yarr = XYpairs[k].Y
-           for(let l = 0; l < Xarr.length; ++l){
+           this.lengths[k] = Math.min(Xarr.length, Yarr.length)
+           for(let l = 0; l < this.lengths[k]; ++l){
                let currentX = Xarr[l]
                let currentY = Yarr[l]
 
@@ -69,8 +72,8 @@ class Graph extends HTMLElement{
                 ctx.beginPath()
                 ctx.moveTo(data.screenX(Xarr, 0), data.screenY(Yarr, 0))
     
-                for(let k = 1; k < Xarr.length; k++){
-                ctx.lineTo(data.screenX(Xarr, k), data.screenY(Yarr, k))
+                for(let l = 1; l < data.lengths[k]; l++){
+                ctx.lineTo(data.screenX(Xarr, l), data.screenY(Yarr, l))
                 }
 
                 ctx.strokeStyle = XYCLs[k].color

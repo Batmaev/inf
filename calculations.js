@@ -24,3 +24,14 @@ function simulate(Nparticles, probabilityDisappear, Nsteps, randFunc, seed){
     }
     return resArr
 }
+
+function derivative(sourceArray, nStepsPerColumn){
+    const N = Math.ceil(sourceArray.length/nStepsPerColumn) - 1
+    let derArray = new Array(N)
+
+    for(let k = 0; k < N; ++k){
+        derArray[k] = - sourceArray[(k + 1) * nStepsPerColumn] + sourceArray[k * nStepsPerColumn]
+    }
+
+    return derArray
+}

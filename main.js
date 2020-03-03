@@ -14,11 +14,20 @@ function main(event){
     let LinCongResults = simulate(Nparticles, probabilityDisappear, Nsteps, linearCongruent, seed)
     let FibResults = simulate(Nparticles, probabilityDisappear, Nsteps, Fibonacci, seed)
 
-    let expObj = document.getElementById("avg")
-    const XYCLsForExp = [
+    let n_x_Obj = document.getElementById("n(x)")
+    const XYCLsForN_X = [
         {X: Xarr, Y: builtInResults, color: builtInColor, lines: true},
         {X: Xarr, Y: LinCongResults, color: linCongColor, lines: true},
         {X: Xarr, Y: FibResults, color: fiboColor, lines: true},
     ]
-    expObj.drawGraph(XYCLsForExp, 0, Nparticles)
+    n_x_Obj.drawGraph(XYCLsForN_X, 0, Nparticles)
+
+    const nStepsPerColumn = 25
+    let derObj = document.getElementById("der")
+    const XYCLsForDer = [
+        {X: Xarr, Y: derivative(builtInResults, nStepsPerColumn), color: builtInColor, lines: true},
+        {X: Xarr, Y: derivative(LinCongResults, nStepsPerColumn), color: linCongColor, lines: true},
+        {X: Xarr, Y: derivative(FibResults, nStepsPerColumn), color: fiboColor, lines: true},
+    ]
+    derObj.drawGraph(XYCLsForDer)
 }

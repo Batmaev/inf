@@ -32,6 +32,10 @@
                     <span class="butt" onclick="setTime()" style="color:aquamarine; white-space: nowrap;">
                         Текущее время</span>
                 </label>
+                <label>
+                    Число шагов на точку (dx в гистограмме)
+                    <input type="text" name="nStepsPerColumn" value="25">
+                </label>
                 <!-- <span onclick="this.parentNode.dispatchEvent(new Event(`submit`))" class="butt" style="align-self: stretch;">
                 Пуск</span> -->
                 <input type="submit" class="butt" style="align-self: center; margin: 20px" value="Запустить">
@@ -57,7 +61,8 @@
                 <canvas></canvas>
             </div>
         </template>
-        <graph-element name="Зависимость числа частиц от пройденного расстояния" id="avg"></graph-element>
+        <graph-element name="Зависимость числа частиц от пройденного расстояния" id="n(x)"></graph-element>
+        <graph-element name="Число частиц, поглощенных за промежуток dx * [n, n + 1]" id="der"></graph-element>
     </body>
     <script src="randoms.js"></script>
     <script src="calculations.js"></script>
