@@ -13,14 +13,14 @@
     </head>
     <body> 
         <div class="rect">
-            <form id="one" style="margin-bottom: 7px; display:flex">
+            <form id="one" style="display:flex; align-items: baseline; margin-bottom: 3px;">
                 <label>
                     Число частиц:
-                    <input type="text" name="Nparticles">
+                    <input type="text" name="Nparticles" value="250">
                 </label>
                 <label>
                     Вероятность поглотиться:
-                    <input type="text" name="W">
+                    <input type="text" name="W" value="0.01">
                 </label>
                 <label>
                     Число шагов:
@@ -29,10 +29,12 @@
                 <label>
                     Зерно: 
                     <input type="text" name="seed" value="1">
-                    <span class="butt" onclick="setTime()" style="color:aquamarine; font-family: sans-serif;">
+                    <span class="butt" onclick="setTime()" style="color:aquamarine;">
                         Текущее время</span>
                 </label>
-                <span onclick="this.parentNode.dispatchEvent(new Event(`submit`))" class="butt">Пуск</span>
+                <!-- <span onclick="this.parentNode.dispatchEvent(new Event(`submit`))" class="butt" style="align-self: stretch;">
+                Пуск</span> -->
+                <input type="submit" class="butt" style="align-self: center;" value="Запустить">
             </form>
             <div style="margin-left: 10px">
                 <div class="oneItem">
