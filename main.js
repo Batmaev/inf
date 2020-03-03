@@ -22,7 +22,7 @@ function main(event){
     ]
     n_x_Obj.drawGraph(XYCLsForN_X, 0, Nparticles)
 
-    const nStepsPerColumn = 25
+    const nStepsPerColumn = Number(document.forms.one.nStepsPerColumn.value)
     let derObj = document.getElementById("der")
     const XYCLsForDer = [
         {X: Xarr, Y: derivative(builtInResults, nStepsPerColumn), color: builtInColor, lines: true},
