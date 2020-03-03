@@ -1,5 +1,5 @@
 function mathRandArray(N){
-    let randArr = new Array(700)
+    let randArr = new Array(N)
     for(let k = 0; k < randArr.length; k++){
        randArr[k] = Math.random()
     }

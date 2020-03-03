@@ -36,6 +36,8 @@ input{
 }
 input[type=text]{
     width: 120px;
+    border-radius: 5px;
+    padding: 3px;
 }
 .small{
     width: 20px;
@@ -48,4 +50,12 @@ input[type=text]{
 }
 label{
     margin-right: 30px;
+}
+.butt{
+    font-size: 18px;
+    font-family: sans-serif;
+    color: #64D2FF;
+    background-color: #303030;
+    border-radius: 5px;
+    padding: 5px;
 }
