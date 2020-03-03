@@ -19,7 +19,7 @@ canvas{
     height: 95vh;
 }
 label{
-    margin: 10px;
+    margin: 20px;
     flex-shrink: 1;
     width: min-content;
     flex-grow: 1;
