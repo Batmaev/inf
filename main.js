@@ -1,33 +1,37 @@
-const builtInColor = "rgba(120, 120, 255, 1)"
-const linCongColor = "rgba(255, 120, 120, 1)"
-const fiboColor = "rgba(240, 240, 120, 1)"
+const Acolor = "rgba(120, 120, 255, 1)"
+const Bcolor = "rgba(255, 120, 120, 1)"
+const TotalColor = "rgba(235, 235, 235, 1)"
 
 function main(event){
     event.preventDefault()
-    const Nparticles = Number(document.forms.one.Nparticles.value)
-    const probabilityDisappear = Number(document.forms.one.W.value)
+    const Aparticles = Number(document.forms.one.Aparticles.value)
+    const Bparticles = Number(document.forms.one.Bparticles.value)
+    const P_A = Number(document.forms.one["P(A)"].value)
+    const P_B = Number(document.forms.one["P(B)"].value)
+    const AtoB = Number(document.forms.one["A->B"].value)
+    const BtoA = Number(document.forms.one["B->A"].value)
     const Nsteps = Number(document.forms.one.Nsteps.value)
-    const seed = Number(document.forms.one.seed.value)
 
     let Xarr = simpleArray(Nsteps)
-    let builtInResults = simulate(Nparticles, probabilityDisappear, Nsteps, mathRandArray, seed)
-    let LinCongResults = simulate(Nparticles, probabilityDisappear, Nsteps, linearCongruent, seed)
-    let FibResults = simulate(Nparticles, probabilityDisappear, Nsteps, Fibonacci, seed)
+
+    let Aarr = new Array(Nsteps)
+    let Barr = new Array(Nsteps)
+
+    Aarr[0] = Aparticles
+    Barr[0] = Bparticles
+
+    for(let k = 1; k < Nsteps; ++k){
+        Aresults = simulate(Aarr[k - 1], P_A, AtoB)
+        Bresults = simulate(Barr[k - 1], P_B, BtoA)
+
+        Aarr[k] = Aarr[k - 1] - Aresults.Changed - Aresults.Disappeared + Bresults.Changed
+        Barr[k] = Barr[k - 1] - Bresults.Changed - Bresults.Disappeared + Aresults.Changed
+    }
 
     let n_x_Obj = document.getElementById("n(x)")
     const XYCLsForN_X = [
-        {X: Xarr, Y: builtInResults, color: builtInColor, lines: true},
-        {X: Xarr, Y: LinCongResults, color: linCongColor, lines: true},
-        {X: Xarr, Y: FibResults, color: fiboColor, lines: true},
+        {X: Xarr, Y: Aarr, color: Acolor, lines: true},
+        {X: Xarr, Y: Barr, color: Bcolor, lines: true},
     ]
-    n_x_Obj.drawGraph(XYCLsForN_X, 0, Nparticles)
-
-    const nStepsPerColumn = Number(document.forms.one.nStepsPerColumn.value)
-    let derObj = document.getElementById("der")
-    const XYCLsForDer = [
-        {X: Xarr, Y: derivative(builtInResults, nStepsPerColumn), color: builtInColor, lines: true},
-        {X: Xarr, Y: derivative(LinCongResults, nStepsPerColumn), color: linCongColor, lines: true},
-        {X: Xarr, Y: derivative(FibResults, nStepsPerColumn), color: fiboColor, lines: true},
-    ]
-    derObj.drawGraph(XYCLsForDer)
+    n_x_Obj.drawGraph(XYCLsForN_X, 0)
 }

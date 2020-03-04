@@ -87,7 +87,6 @@ class Graph extends HTMLElement{
                      2 * HALF_DOT_SIZE, 2 * HALF_DOT_SIZE)
                 }
             }
-        
         }
     }
 }

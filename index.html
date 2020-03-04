@@ -15,26 +15,32 @@
         <div class="rect">
             <form id="one">
                 <label>
-                    Число частиц:
-                    <input type="text" name="Nparticles" value="250">
+                    Начальное число частиц типа А:
+                    <input type="text" name="Aparticles" value="250">
                 </label>
                 <label>
-                    Вероятность поглотиться:
-                    <input type="text" name="W" value="0.005">
+                    Начальное число частиц типа B:
+                    <input type="text" name="Bparticles" value="250">
+                </label>
+                <label>
+                    Вероятность поглотиться для частиц типа A:
+                    <input type="text" name="P(A)" value="0.01">
+                </label>
+                <label>
+                    Вероятность поглотиться для частиц типа B:
+                    <input type="text" name="P(B)" value="0.01">
+                </label>
+                <label>
+                    Вероятность перехода A -> B:
+                    <input type="text" name="A->B" value="0.01">
+                </label>
+                <label>
+                    Вероятность перехода B -> A:
+                    <input type="text" name="B->A" value="0.01">
                 </label>
                 <label>
                     Число шагов:
                     <input type="text" name="Nsteps">
-                </label>
-                <label>
-                    Зерно: 
-                    <input type="text" name="seed" value="1">
-                    <span class="butt" onclick="setTime()" style="color:aquamarine; white-space: nowrap;">
-                        Текущее время</span>
-                </label>
-                <label>
-                    Число шагов на точку (dx в гистограмме)
-                    <input type="text" name="nStepsPerColumn" value="25">
                 </label>
                 <!-- <span onclick="this.parentNode.dispatchEvent(new Event(`submit`))" class="butt" style="align-self: stretch;">
                 Пуск</span> -->
@@ -43,16 +49,16 @@
             <div style="margin-left: 10px">
                 <div class="oneItem">
                     <div class="small" style="background-color: rgba(120, 120, 255, 1);"></div>
-                    <div>Встроенная функция Math.random()</div>
+                    <div>Частиц типа A</div>
                 </div>
                 <div class="oneItem">
                     <div class="small" style="background-color: rgba(255, 120, 120, 1);"></div>
-                    <div>Линейный конгруэнтный метод</div>
+                    <div>Частиц типа B</div>
                 </div>
-                <div class="oneItem">
-                    <div class="small" style="background-color: rgba(240, 240, 120, 1);"></div>
-                    <div>Метод Фибоначчи с запаздываниями</div>
-                </div>
+                <!-- <div class="oneItem">
+                    <div class="small" style="background-color: rgba(235, 235, 235, 1);"></div>
+                    <div>Всего частиц</div>
+                </div> -->
             </div>
         </div>
         <template id="graphTempl">
@@ -62,7 +68,6 @@
             </div>
         </template>
         <graph-element name="Зависимость числа частиц от пройденного расстояния" id="n(x)"></graph-element>
-        <graph-element name="Число частиц, поглощенных за промежуток dx * [n, n + 1]" id="der"></graph-element>
     </body>
     <script src="randoms.js"></script>
     <script src="calculations.js"></script>

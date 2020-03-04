@@ -7,31 +7,17 @@ function simpleArray(N){
     return array
 }
 
-function simulate(Nparticles, probabilityDisappear, Nsteps, randFunc, seed){
-    const resArr = new Array(Nsteps)
-    resArr[0] = Nparticles
-
-    for(let k = 1; k < Nsteps; ++k){
-        let randArr = randFunc(resArr[k - 1], seed)
-        seed = randArr[randArr.length - 1] //костыль для разных seed каждый раз
-        resArr[k] = 0
-        randArr.forEach(element => {
-            if(element > probabilityDisappear){
-                resArr[k] += 1
-            }
-        });
-
+function simulate(Nparticles, probabilityDisappear, probabilityChange){
+    let disappeared = 0
+    let changed = 0
+    for(let k = 0; k < Nparticles; k++){
+        let randomValue = Math.random()
+        if(randomValue < probabilityDisappear){
+            disappeared++
+        }
+        else if(randomValue < probabilityDisappear + probabilityChange){
+            changed++
+        }
     }
-    return resArr
-}
-
-function derivative(sourceArray, nStepsPerColumn){
-    const N = Math.ceil(sourceArray.length/nStepsPerColumn) - 1
-    let derArray = new Array(N)
-
-    for(let k = 0; k < N; ++k){
-        derArray[k] = - sourceArray[(k + 1) * nStepsPerColumn] + sourceArray[k * nStepsPerColumn]
-    }
-
-    return derArray
+    return {Disappeared: disappeared, Changed: changed}
 }
