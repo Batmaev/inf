@@ -4,7 +4,7 @@ oneForm.Nsteps.value = Math.floor(document.getElementById("n(x)").querySelector(
 
 oneForm.addEventListener("keypress", event => {
     if(event.keyCode == 13){
-        oneForm.dispatchEvent(new Event("submit"))
+        oneForm.dispatchEvent(new Event("submit", {cancelable: true}))
     }
 })
 
