@@ -50,14 +50,15 @@ class Graph extends HTMLElement{
         //     strict: false
         // })
         head.innerHTML = this.getAttribute("name")
+
+        this.svg = this.querySelector("svg")
     }
 
     drawGraph(XYCLs, minY, maxY){
         //XYLs = [{X, Y, color, lines or dots}]
-        const MysvgElement = this.querySelector("svg")
         
-        const width = MysvgElement.getBoundingClientRect().width
-        const height = MysvgElement.getBoundingClientRect().height
+        const width = this.svg.getBoundingClientRect().width
+        const height = this.svg.getBoundingClientRect().height
         // MysvgElement.setAttribute("width", `${Math.round(width)}`)
         // MysvgElement.setAttribute("height", `${Math.round(height)}`)
 
@@ -75,7 +76,7 @@ class Graph extends HTMLElement{
                 }
                 polyline.setAttributeNS(null, "points", str)
                 polyline.setAttributeNS(null, "stroke", XYCLs[k].color)
-                MysvgElement.append(polyline)
+                this.svg.append(polyline)
             }
             else{
                 ctx.fillStyle = XYCLs[k].color
@@ -86,6 +87,10 @@ class Graph extends HTMLElement{
                 }
             }
         }
+    }
+
+    clear(){
+        this.svg.textContent = ""
     }
 }
 customElements.define("graph-element", Graph);

@@ -29,6 +29,7 @@ function main(event){
     }
 
     let n_x_Obj = document.getElementById("n(x)")
+    n_x_Obj.clear()
     const XYCLsForN_X = [
         {X: Xarr, Y: Aarr, color: Acolor, lines: true},
         {X: Xarr, Y: Barr, color: Bcolor, lines: true},
