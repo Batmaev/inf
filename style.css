@@ -12,8 +12,13 @@ body{
     display: flex;
     flex-direction: column;
 }
-canvas{
+svg{
     flex-grow: 1;
+}
+polyline{
+    fill: none;
+    stroke-width: 1.5px;
+    stroke-linejoin: round;
 }
 .big{
     height: 95vh;

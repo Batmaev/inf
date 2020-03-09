@@ -54,13 +54,12 @@ class Graph extends HTMLElement{
 
     drawGraph(XYCLs, minY, maxY){
         //XYLs = [{X, Y, color, lines or dots}]
-        const cnv = this.querySelector("canvas")
-        let ctx = cnv.getContext("2d")
+        const MysvgElement = this.querySelector("svg")
         
-        const width = cnv.getBoundingClientRect().width
-        const height = cnv.getBoundingClientRect().height
-        cnv.height = height
-        cnv.width = width
+        const width = MysvgElement.getBoundingClientRect().width
+        const height = MysvgElement.getBoundingClientRect().height
+        // MysvgElement.setAttribute("width", `${Math.round(width)}`)
+        // MysvgElement.setAttribute("height", `${Math.round(height)}`)
 
         let data = new DataForGraphList(XYCLs, width, height, minY, maxY)
 
@@ -69,15 +68,14 @@ class Graph extends HTMLElement{
             let Yarr = XYCLs[k].Y
 
             if(XYCLs[k].lines){
-                ctx.beginPath()
-                ctx.moveTo(data.screenX(Xarr, 0), data.screenY(Yarr, 0))
-    
+                let polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline")
+                let str = ""
                 for(let l = 1; l < data.lengths[k]; l++){
-                ctx.lineTo(data.screenX(Xarr, l), data.screenY(Yarr, l))
+                    str += `${(data.screenX(Xarr, l))},${(data.screenY(Yarr, l))} `
                 }
-
-                ctx.strokeStyle = XYCLs[k].color
-                ctx.stroke()
+                polyline.setAttributeNS(null, "points", str)
+                polyline.setAttributeNS(null, "stroke", XYCLs[k].color)
+                MysvgElement.append(polyline)
             }
             else{
                 ctx.fillStyle = XYCLs[k].color

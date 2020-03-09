@@ -1,6 +1,6 @@
-const Acolor = "rgba(120, 120, 255, 1)"
-const Bcolor = "rgba(255, 120, 120, 1)"
-const TotalColor = "rgba(235, 235, 235, 1)"
+const Acolor = "rgb(120, 120, 255)"
+const Bcolor = "rgb(255, 120, 120)"
+const TotalColor = "rgb(235, 235, 235)"
 
 function main(event){
     event.preventDefault()
