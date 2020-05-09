@@ -1,7 +1,11 @@
 function main(event){
     event.preventDefault()
-    const diameter = 20 //Number(document.forms.one.diameter.value)
-    //const v_1_0 = Number(document.forms.one.v_1_0.value)
+    const an = document.getElementById("anime")
+    while (an.firstChild) {
+        an.removeChild(an.firstChild);
+      }
+      clearInterval(interval)
+    const diameter = Number(document.forms.one.diameter.value)
 
     const Nparticles = 10
     const masses = new Array (Nparticles) //(Nparticles + 2) //Лишние 2 частицы - это стенки, [-1] и [Nparticles]
@@ -17,15 +21,16 @@ function main(event){
     }
 
     const velocities = new Array(Nparticles + 1)
-    velocities[0] = -0.06 // Number(document.forms.one.v_1_0.value)
+    velocities[0] = Number(document.forms.one.v_1.value)
     for(let i = 1; i < velocities.length; i++){
         velocities[i] = 0
     }
     velocities[-1] = 0
 
-    let dt = 64
+    const dt = 1000 / Number(document.forms.one.playrate.value)
     console.log(positions)
-    let positionsHistory = simulate(positions, velocities, masses, dt, diameter, (now, t0) => !(now > 9 * t0))
+    let positionsHistory = simulate(positions, velocities, masses, dt, diameter, 
+        (now, t0) => !(now > t0 * Number(document.forms.one.t_k_t.value)))
     console.log(positionsHistory)
 
     // for(let i = 0; i < velocities.length; i++){
