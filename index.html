@@ -15,7 +15,7 @@
         <div class="rect">
             <form id="one">
                 <label>
-                    $v_1$ в пикселях в милисекунду:
+                    \(v_1\) в пикселях в милисекунду:
                     <input type="text" name="v_1" value="0.6">
                 </label>
                 <label>
@@ -27,21 +27,9 @@
                     <input type="text" name="playrate" value="20">
                 </label>
                 <label>
-                    $$t_остановки / t_0
-                    <input type="text" name="P(B)" value="0.01">
+                    \(t_{остановки} / t_0\)
+                    <input type="text" name="t_k_t" value="0.01">
                     (t)
-                </label>
-                <label>
-                    Вероятность перехода A -> B:
-                    <input type="text" name="A->B" value="0.01">
-                </label>
-                <label>
-                    Вероятность перехода B -> A:
-                    <input type="text" name="B->A" value="0.01">
-                </label>
-                <label>
-                    Число шагов:
-                    <input type="text" name="Nsteps">
                 </label>
                 <!-- <span onclick="this.parentNode.dispatchEvent(new Event(`submit`))" class="butt" style="align-self: stretch;">
                 Пуск</span> -->
@@ -50,11 +38,11 @@
             <div style="margin-left: 10px">
                 <div class="oneItem">
                     <div class="small" style="background-color: rgba(120, 120, 255, 1);"></div>
-                    <div>Частиц типа A</div>
+                    <div>\(m=1\)</div>
                 </div>
                 <div class="oneItem">
-                    <div class="small" style="background-color: rgba(255, 120, 120, 1);"></div>
-                    <div>Частиц типа B</div>
+                    <div class="small" style="background-color: rgba(120, 185, 120, 1);"></div>
+                    <div>\(m=4\)</div>
                 </div>
                 <!-- <div class="oneItem">
                     <div class="small" style="background-color: rgba(235, 235, 235, 1);"></div>
@@ -68,7 +56,10 @@
                 <svg xmlns = "http://www.w3.org/2000/svg"></svg>
             </div>
         </template>
-        <graph-element name="Анимация" id="anime"></graph-element>
+        <div class="rect">
+            <svg xmlns = "http://www.w3.org/2000/svg" id="anime"></svg>
+        </div>
+        <!-- <graph-element name="Анимация" id="anime"></graph-element> -->
     </body>
     <script src="calculations.js"></script>
     <script src="graph-element.js"></script>

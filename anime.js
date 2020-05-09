@@ -1,5 +1,5 @@
 function anime(positionsHistory, masses, diameter, dt){
-    const svg = document.getElementById("anime").querySelector("svg")
+    const svg = document.getElementById("anime")
     const circles = []
     //let i = 0
     masses.forEach(element => {
@@ -7,10 +7,10 @@ function anime(positionsHistory, masses, diameter, dt){
         circle.setAttribute("cy", "50")
         circle.setAttribute("r", diameter/2)
         if(element === 1){
-            circle.setAttribute("fill", "blue")
+            circle.setAttribute("fill", "rgba(120, 120, 255, 1)")
         }
         else{
-            circle.setAttribute("fill", "green")
+            circle.setAttribute("fill", "rgba(120, 185, 120, 1)")
         }
         //circle.setAttribute("cx", positionsHistory[0][i++])
         svg.append(circle)
