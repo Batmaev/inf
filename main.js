@@ -1,6 +1,6 @@
 function main(event){
     event.preventDefault()
-    const diameter = 10 //Number(document.forms.one.diameter.value)
+    const diameter = 20 //Number(document.forms.one.diameter.value)
     //const v_1_0 = Number(document.forms.one.v_1_0.value)
 
     const Nparticles = 10
@@ -10,25 +10,29 @@ function main(event){
     }
 
     const positions  = new Array(Nparticles + 1) //В момент времени сразу после столкновения
-    const totalLength = 500
+    const totalLength = 800
     const between = (totalLength + diameter) / (Nparticles + 1)
     for(let i = -1; i < positions.length; i++){
         positions[i] = (i + 1) * between - diameter / 2
     }
 
     const velocities = new Array(Nparticles + 1)
-    velocities[0] = -1 // Number(document.forms.one.v_1_0.value)
+    velocities[0] = -0.06 // Number(document.forms.one.v_1_0.value)
     for(let i = 1; i < velocities.length; i++){
         velocities[i] = 0
     }
     velocities[-1] = 0
 
-    
+    let dt = 64
     console.log(positions)
-    let positionsHistory = simulate(positions, velocities, masses, 0.1, diameter, (now, t0) => !(now > t0))
-    console.log(positions)
+    let positionsHistory = simulate(positions, velocities, masses, dt, diameter, (now, t0) => !(now > 9 * t0))
+    console.log(positionsHistory)
 
-    
+    // for(let i = 0; i < velocities.length; i++){
+    //     velocities[i] *= -1
+    // }
+    // positionsHistory = simulate(positions, velocities, masses, dt, diameter, (now, t0) => !(now > 9 * t0))
+    anime(positionsHistory, masses, diameter, dt)
 
 
 

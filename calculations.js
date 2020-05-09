@@ -11,6 +11,9 @@ function simulate(positions, velocities, masses, dt, diameter, continue_conditio
     let t0 = undefined //время, когда НЕ последний шарик начнёт двигаться
 //Мб есть разрыв, когда я запущу время в обратную сторону
     while(continue_condition(time.of_frame, t0)){
+        if(collisions[0] === NaN){
+            break
+        }
         let soon = findSoonestCollisions(collisions)
         time.before_collision = collisions[soon[0]]
 
@@ -24,7 +27,7 @@ function simulate(positions, velocities, masses, dt, diameter, continue_conditio
 
         updateVelocities(masses, velocities, soon)
         console.log(`velocities: ${velocities}`)
-        if(t0 === undefined && velocities[3] !== 0){
+        if(t0 === undefined && velocities[9] !== 0){
             t0 = time.of_previous_collision
         }
         updateCollisions(positions, velocities, collisions, soon, diameter)
@@ -61,7 +64,7 @@ function writeHistory(time, positions, velocities, positionsHistory, dt){
     while(time.of_frame + dt < time.of_previous_collision + time.before_collision){
         time.of_frame += dt
         positionsHistory.push(positionsHistory[positionsHistory.length - 1].map((value, i) => 
-            value + dt * velocities[i + 1])) //Из-за этого velocities смещены на скорость стенки
+            value + dt * velocities[i]))
     }
     time.of_previous_collision += time.before_collision
 }
@@ -89,25 +92,37 @@ function calculateCollision(positions, velocities, diameter, i){
 
 function updateCollisions(positions, velocities, collisions, happened, diameter){
     const deltaT = collisions[happened[0]]
-    let j = 0
     for(let i = 0; i < collisions.length; i++){
-        if(i === happened[j]){
-            collisions[i] = calculateCollision(positions, velocities, i)
-            if(i !== 0){
-                collisions[i - 1] = calculateCollision(positions, velocities, diameter, i - 1)
-            }
-            if(i + 1 != collisions.length){
-                collisions[i + 1] = calculateCollision(positions, velocities, diameter, i + 1)
-            }
-            j++
-            if(happened.length === j){
-                break;
-            }
-        }
-        else{
-            collisions[i] -= deltaT
-        }
+        collisions[i] -= deltaT
     }
+    happened.forEach(i => {
+        collisions[i] = calculateCollision(positions, velocities, i)
+        if(i !== 0){
+            collisions[i - 1] = calculateCollision(positions, velocities, diameter, i - 1)
+        }
+        if(i + 1 != collisions.length){
+            collisions[i + 1] = calculateCollision(positions, velocities, diameter, i + 1)
+        }
+    })
+    // let j = 0
+    // for(let i = 0; i < collisions.length; i++){
+    //     if(i === happened[j]){
+    //         collisions[i] = calculateCollision(positions, velocities, i)
+    //         if(i !== 0){
+    //             collisions[i - 1] = calculateCollision(positions, velocities, diameter, i - 1)
+    //         }
+    //         if(i + 1 != collisions.length){
+    //             collisions[i + 1] = calculateCollision(positions, velocities, diameter, i + 1)
+    //         }
+    //         j++
+    //         if(happened.length === j){ //wtf почему это всё портит
+    //             break;
+    //         }
+    //     }
+    //     else{
+    //         collisions[i] -= deltaT
+    //     }
+    // }
     console.log(`collisions: ${collisions}`)
 }
 
@@ -121,7 +136,7 @@ function updateCollisions(positions, velocities, collisions, happened, diameter)
 // }
 
 function findSoonestCollisions(collisions){
-    console.log(`collisions tc: ${collisions}`)
+    //console.log(`collisions tc: ${collisions}`)
     let ans = []
     let min_time = NaN
     let cur
@@ -142,7 +157,7 @@ function findSoonestCollisions(collisions){
             }
         }
     }
-    alert(`${ans[0]} : ${collisions[ans[0]]}`)
+    console.log(`${ans[0]} : ${collisions[ans[0]]}`)
     //alert(collisions[ans[0]] > 0)
     return ans 
 }
