@@ -6,3 +6,5 @@ oneForm.addEventListener("keypress", event => {
         oneForm.dispatchEvent(new Event("submit", {cancelable: true}))
     }
 })
+
+document.getElementById("TotalLength").innerText = Math.round(document.getElementById("anime").getBoundingClientRect().width)

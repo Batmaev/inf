@@ -13,43 +13,59 @@
     </head>
     <body> 
         <div class="rect">
-            <form id="one">
-                <label>
-                    \(v_1\) в пикселях в милисекунду:
-                    <input type="text" name="v_1" value="0.6">
-                </label>
-                <label>
-                    Диаметр в пикселях:
-                    <input type="text" name="diameter" value="30">
-                </label>
-                <label>
-                    Кадров в секунду:
-                    <input type="text" name="playrate" value="15">
-                </label>
-                <label>
-                    \(t_{остановки} / t_0\)
-                    <input type="text" name="t_k_t" value="10">
-                    <!-- (t_0 - это когда последний шарик начинает двигаться) -->
-                </label>
-                <!-- <span onclick="this.parentNode.dispatchEvent(new Event(`submit`))" class="butt" style="align-self: stretch;">
-                Пуск</span> -->
-                <input type="submit" class="butt" style="align-self: center; margin: 20px" value="Запустить">
+            <form id="gen">
+                <div class="div-label">
+                    <label>
+                        <input type="text" name="v_1" value="0.6">
+                        \(v_1\) в пикселях в милисекунду
+                    </label>
+                </div>
+                <div class="div-label">
+                    <label>
+                        <input type="text" name="diameter" value="30">
+                        Диаметр в пикселях (всего доступно <span id="TotalLength"></span> пикс.)
+                </div>
             </form>
             <div style="margin-left: 10px">
                 <div class="oneItem">
-                    <div class="small" style="background-color: rgba(120, 120, 255, 1);"></div>
+                    <div class="small" style="background-color: var(--m1-color);"></div>
                     <div>\(m=1\)</div>
                 </div>
                 <div class="oneItem">
-                    <div class="small" style="background-color: rgba(120, 185, 120, 1);"></div>
+                    <div class="small" style="background-color: var(--m2-color);"></div>
                     <div>\(m=4\)</div>
                 </div>
-                <!-- <div class="oneItem">
-                    <div class="small" style="background-color: rgba(235, 235, 235, 1);"></div>
-                    <div>Всего частиц</div>
-                </div> -->
             </div>
         </div>
+
+        <div class="rect">
+            <form id="animef">
+                <div class="div-label">
+                    <label>
+                        <input type="text" name="playrate" value="15">
+                        кадров в секунду
+                    </label>
+                </div>
+                <div class="div-label">
+                    <label>
+                        <input type="text" name="t_k_t" value="10">
+                        \(t_{инверсии} / t_0\)&#9;
+                        (\(t_0\) - это когда последний шарик начинает двигаться)
+                    </label>
+                </div>
+                <div class="div-label">
+                    <label>
+                        <input type="text" name="vel_err" value="0">
+                        \(\Delta v\) первого шарика в момент инверсии
+                    </label>
+                </div>
+                <div class="div-label">
+                    <span onclick="main_for_anime()" class="butt">
+                        Запустить анимацию</span>
+                </div>
+            </form>
+        </div>
+
         <template id="graphTempl">
             <div class="big rect">
                 <div class="head"></div>
@@ -64,6 +80,6 @@
     <script src="calculations.js"></script>
     <script src="graph-element.js"></script>
     <script src="anime.js"></script>
-    <script src="main.js"></script>
+    <script src="main.ts"></script>
     <script src="events.js"></script>
 </html>

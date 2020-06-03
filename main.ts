@@ -14,7 +14,7 @@ function main(event){
     }
 
     const positions  = new Array(Nparticles + 1) //В момент времени сразу после столкновения
-    const totalLength = 800
+    const totalLength = an.getBoundingClientRect().width
     const between = (totalLength + diameter) / (Nparticles + 1)
     for(let i = -1; i < positions.length; i++){
         positions[i] = (i + 1) * between - diameter / 2
