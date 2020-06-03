@@ -26,7 +26,7 @@ function anime(positionsHistory, masses, diameter, dt){
         circle.setAttribute("cx", positionsHistory[i][index])
         )
         if(++i === positionsHistory.length){
-            interval
+            clearInterval(interval)
         }
     }, dt);
 }

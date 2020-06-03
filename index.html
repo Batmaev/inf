@@ -42,13 +42,13 @@
             <form id="animef">
                 <div class="div-label">
                     <label>
-                        <input type="text" name="playrate" value="15">
+                        <input type="text" name="playrate" value="20">
                         кадров в секунду
                     </label>
                 </div>
                 <div class="div-label">
                     <label>
-                        <input type="text" name="t_k_t" value="10">
+                        <input type="text" name="t_k_t" value="2">
                         \(t_{инверсии} / t_0\)&#9;
                         (\(t_0\) - это когда последний шарик начинает двигаться)
                     </label>
@@ -59,11 +59,10 @@
                         \(\Delta v\) первого шарика в момент инверсии
                     </label>
                 </div>
-                <div class="div-label">
-                    <span onclick="main_for_anime()" class="butt">
-                        Запустить анимацию</span>
-                </div>
             </form>
+            <div class="div-label">
+                <button onclick="main_for_anime()" class="butt">Запустить анимацию</button>
+            </div>
         </div>
 
         <template id="graphTempl">
@@ -77,9 +76,10 @@
         </div>
         <!-- <graph-element name="Анимация" id="anime"></graph-element> -->
     </body>
+    <!-- <script type="module" src="imports.js"></script> -->
     <script src="calculations.js"></script>
     <script src="graph-element.js"></script>
     <script src="anime.js"></script>
-    <script src="main.ts"></script>
-    <script src="events.js"></script>
+    <script src="./main.ts"></script>
+    <script src="./events.js"></script>
 </html>
