@@ -13,4 +13,4 @@
 
 document.getElementById("TotalLength").innerText = Math.round(document.getElementById("anime").getBoundingClientRect().width)
 
-//document.getElementById("anime-butt").addEventListener("click", () => alert('3'))
+//document.getElementById("anime-butt").onclick = main_for_anime

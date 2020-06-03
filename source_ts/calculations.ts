@@ -1,3 +1,32 @@
+function gett0(positions: number[], velocities: number[], masses: number[], diameter: number){
+
+    const Nparticles = masses.length
+    const collisions = createCollisions(positions, velocities, diameter)
+
+    let time ={
+        before_collision : 0,
+        of_previous_collision : 0,
+    };
+
+    while(velocities[Nparticles - 1] === 0){
+        let soon = findSoonestCollisions(collisions)
+        time.before_collision = collisions[soon[0]]
+
+        for(let i = 0; i < Nparticles; i++){
+            positions[i] += velocities[i] * time.before_collision
+        }
+
+        time.of_previous_collision += time.before_collision
+
+        updateVelocities(masses, velocities, soon)
+        updateCollisions(positions, velocities, collisions, soon, diameter)
+    }
+
+    return time.of_previous_collision
+}
+
+
+
 function simulate(positions, velocities, masses, dt, diameter, continue_condition){
     const Nparticles = masses.length
     const collisions = createCollisions(positions, velocities, diameter)
@@ -5,6 +34,7 @@ function simulate(positions, velocities, masses, dt, diameter, continue_conditio
     positionsHistory[0] = positions.slice(0, -1)
 
     let time ={
+        before_collision : 0,
         of_frame : 0,
         of_previous_collision : 0,
     };
@@ -29,6 +59,7 @@ function simulate(positions, velocities, masses, dt, diameter, continue_conditio
         console.log(`velocities: ${velocities}`)
         if(t0 === undefined && velocities[9] !== 0){
             t0 = time.of_previous_collision
+            alert(t0)
         }
         updateCollisions(positions, velocities, collisions, soon, diameter)
     }
@@ -104,25 +135,6 @@ function updateCollisions(positions, velocities, collisions, happened, diameter)
             collisions[i + 1] = calculateCollision(positions, velocities, diameter, i + 1)
         }
     })
-    // let j = 0
-    // for(let i = 0; i < collisions.length; i++){
-    //     if(i === happened[j]){
-    //         collisions[i] = calculateCollision(positions, velocities, i)
-    //         if(i !== 0){
-    //             collisions[i - 1] = calculateCollision(positions, velocities, diameter, i - 1)
-    //         }
-    //         if(i + 1 != collisions.length){
-    //             collisions[i + 1] = calculateCollision(positions, velocities, diameter, i + 1)
-    //         }
-    //         j++
-    //         if(happened.length === j){ //wtf почему это всё портит
-    //             break;
-    //         }
-    //     }
-    //     else{
-    //         collisions[i] -= deltaT
-    //     }
-    // }
     console.log(`collisions: ${collisions}`)
 }
 
@@ -136,7 +148,6 @@ function updateCollisions(positions, velocities, collisions, happened, diameter)
 // }
 
 function findSoonestCollisions(collisions){
-    //console.log(`collisions tc: ${collisions}`)
     let ans = []
     let min_time = NaN
     let cur
@@ -157,7 +168,5 @@ function findSoonestCollisions(collisions){
             }
         }
     }
-    console.log(`${ans[0]} : ${collisions[ans[0]]}`)
-    //alert(collisions[ans[0]] > 0)
     return ans 
 }
