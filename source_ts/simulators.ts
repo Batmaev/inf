@@ -62,16 +62,31 @@ function simulate(
     return positionsHistory
 }
 
-function energy(positions: number[], velocities: number[], masses: number[], diameter: number){
+function energy(positions: number[], velocities: number[], masses: number[], diameter: number, when_stop : number){
     const Nparticles = masses.length
     const collisions = createCollisions(positions, velocities, diameter)
+
+    const m1 = 1
+    const m2 = 4
+
+    let m1l : number[]
+    let m2l : number[]
+
+    masses.forEach((value, i) => {
+        if(value === m1) m1l.push(i)
+        else m2l.push(i)
+    })
+
+    let e1 : number[]
+    let e2 : number[]
+    let tt : number[]
 
     let time ={
         before_collision : 0,
         of_previous_collision : 0,
     };
 
-    while(velocities[Nparticles - 1] === 0){
+    while(time.of_previous_collision < when_stop){
         let soon = findSoonestCollisions(collisions)
         time.before_collision = collisions[soon[0]]
 
@@ -79,11 +94,14 @@ function energy(positions: number[], velocities: number[], masses: number[], dia
             positions[i] += velocities[i] * time.before_collision
         }
 
+        e1.push(m1 * m1l.reduce((acc, i) => acc + velocities[i] ** 2) / Nparticles)
+        e2.push(m2 * m2l.reduce((acc, i) => acc + velocities[i] ** 2) / Nparticles)
+        tt.push(time.of_previous_collision)
+
         time.of_previous_collision += time.before_collision
 
         updateVelocities(masses, velocities, soon)
         updateCollisions(positions, velocities, collisions, soon, diameter)
     }
-
-    return time.of_previous_collision
+    return {t: tt, e1: e1, e2: e2}
 }

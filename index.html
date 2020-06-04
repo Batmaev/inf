@@ -53,7 +53,7 @@
                 <div class="div-label">
                     <label>
                         <input type="text" name="t_k_t" value="2">
-                        \(t_{инверсии} / t_0\)&#9;
+                        \(t_{инверсии} / t_0\)
                         (\(t_0\) - это следующее столкновение после того, как последний шарик начал двигаться)
                     </label>
                 </div>
@@ -77,6 +77,16 @@
         </template>
         <div class="rect" style="display: flex; flex-direction: column;">
             <svg xmlns = "http://www.w3.org/2000/svg" id="anime"></svg>
+        </div>
+        <div class="rect">
+            <form id="ef">
+                <div class="div-label">
+                    <label>
+                        <input type="text" name="stop" value="5">
+                        \(t_{остановки} / t_0\)
+                    </label>
+                </div>
+            </form>
         </div>
         <graph-element name="Средняя энергия" id="energy"></graph-element>
     </body>

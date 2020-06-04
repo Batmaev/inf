@@ -1,4 +1,13 @@
 class DataForGraphList{
+    width : number
+    height : number
+    lengths : number[]
+    maxX : number
+    minX : number
+    ampX : number
+    maxY : number
+    minY : number
+    ampY : number
     constructor(XYpairs, width, height, userMinY, userMaxY){
         this.width = width
         this.height = height
@@ -40,6 +49,7 @@ class DataForGraphList{
 }
 
 class Graph extends HTMLElement{
+    svg : SVGSVGElement
     constructor(){
         super()
         this.append(graphTempl.content.cloneNode(true))
@@ -78,14 +88,14 @@ class Graph extends HTMLElement{
                 polyline.setAttributeNS(null, "stroke", XYCLs[k].color)
                 this.svg.append(polyline)
             }
-            else{
-                ctx.fillStyle = XYCLs[k].color
-                const HALF_DOT_SIZE = 3
-                for(let l = 0; l < data.lengths[k]; l++){
-                    ctx.fillRect(data.screenX(Xarr, l) - HALF_DOT_SIZE, data.screenY(Yarr, l) - HALF_DOT_SIZE,
-                     2 * HALF_DOT_SIZE, 2 * HALF_DOT_SIZE)
-                }
-            }
+            // else{
+            //     ctx.fillStyle = XYCLs[k].color
+            //     const HALF_DOT_SIZE = 3
+            //     for(let l = 0; l < data.lengths[k]; l++){
+            //         ctx.fillRect(data.screenX(Xarr, l) - HALF_DOT_SIZE, data.screenY(Yarr, l) - HALF_DOT_SIZE,
+            //          2 * HALF_DOT_SIZE, 2 * HALF_DOT_SIZE)
+            //     }
+            // }
         }
     }
 

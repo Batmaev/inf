@@ -50,6 +50,16 @@ function main(what) {
         }
     }
     if (what === "plot") {
+        discharge();
+        const when_stop = 0;
+        const r = energy(positions, velocities, masses, diameter, when_stop);
+        const en_Obj = document.getElementById("energy");
+        en_Obj.clear();
+        const XYCL = [
+            { X: r.t, Y: r.e1, color: "var(--m1-color)", lines: true },
+            { X: r.t, Y: r.e2, color: "var(--m2-color)", lines: true }
+        ];
+        en_Obj.drawGraph(XYCL, 0);
     }
 }
 // let Xarr = simpleArray(Nsteps)
