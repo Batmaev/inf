@@ -36,8 +36,7 @@ function main(what : string){
         const dt = 1000 / Number(document.forms['animef'].playrate.value)
         const inversion_time = t0 * Number(document.forms['animef'].t_k_t.value)
 
-        let positionsHistory = simulate(positions, velocities, masses, dt, diameter, 
-           (now : number) => !(now > inversion_time))
+        let positionsHistory = simulate(positions, velocities, masses, dt, diameter, inversion_time)
 
         let anime1 = anime(positionsHistory, masses, diameter, dt)
 
@@ -53,7 +52,7 @@ function main(what : string){
         velocities[0] += Number(document.forms['animef'].v1_err.value)
 
         let positionsHistory2 = simulate(positions, velocities, masses, dt, diameter, 
-            (now : number) => !(now > inversion_time + artif))
+            inversion_time + artif)
     
         anime1.then(a => {
             alert(`Сейчас скорости изменятся на противоположные. Средний модуль скорости ${mean(velocities)} пикс./мс`)
