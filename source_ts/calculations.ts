@@ -40,27 +40,22 @@ function simulate(positions, velocities, masses, dt, diameter, continue_conditio
     };
     let t0 = undefined //время, когда НЕ последний шарик начнёт двигаться
 //Мб есть разрыв, когда я запущу время в обратную сторону
-    while(continue_condition(time.of_frame, t0)){
+    while(continue_condition(time.of_frame)){
         if(collisions[0] === NaN){
             break
         }
+        console.log(`positions : ${positions}`)
+        console.log(`velocities : ${velocities}`)
+
         let soon = findSoonestCollisions(collisions)
         time.before_collision = collisions[soon[0]]
 
         writeHistory(time, positions, velocities, positionsHistory, dt)
         
-
         for(let i = 0; i < Nparticles; i++){
             positions[i] += velocities[i] * time.before_collision
         }
-        console.log(`positions: ${positions}`)
-
         updateVelocities(masses, velocities, soon)
-        console.log(`velocities: ${velocities}`)
-        if(t0 === undefined && velocities[9] !== 0){
-            t0 = time.of_previous_collision
-            alert(t0)
-        }
         updateCollisions(positions, velocities, collisions, soon, diameter)
     }
     return positionsHistory
@@ -104,7 +99,7 @@ function createCollisions(positions, velocities, diameter){
     const Nparticles = positions.length - 1
     const collisions = new Array(Nparticles + 1)
 
-    for(i = 0; i < collisions.length; i++){
+    for(let i = 0; i < collisions.length; i++){
         collisions[i] = calculateCollision(positions, velocities, diameter, i)
     }
     console.log(`collisions: ${collisions}`)
@@ -127,7 +122,7 @@ function updateCollisions(positions, velocities, collisions, happened, diameter)
         collisions[i] -= deltaT
     }
     happened.forEach(i => {
-        collisions[i] = calculateCollision(positions, velocities, i)
+        collisions[i] = calculateCollision(positions, velocities, diameter, i)
         if(i !== 0){
             collisions[i - 1] = calculateCollision(positions, velocities, diameter, i - 1)
         }
@@ -155,12 +150,10 @@ function findSoonestCollisions(collisions){
         cur = collisions[i]
         if(cur > 0){
             if(!(cur >= min_time)){ // true если min_time = NaN
-                console.log(cur)
                 min_time = cur
                 ans = [i]
             }
             else if(cur === min_time){
-                console.log(i)
                 if(i === ans[-1] + 1){
                     alert("triple collision: возможна ошибка")
                 }
@@ -168,5 +161,6 @@ function findSoonestCollisions(collisions){
             }
         }
     }
+    console.log(`collisions[${ans[0]}] = ${collisions[ans[0]]}`)
     return ans 
 }

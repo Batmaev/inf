@@ -7,8 +7,8 @@ function anime(positionsHistory, masses, diameter, dt){
     //let i = 0
     masses.forEach(element => {
         let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
-        circle.setAttribute("cy", cy)
-        circle.setAttribute("r", diameter/2)
+        circle.setAttribute("cy", cy.toString())
+        circle.setAttribute("r", (diameter/2).toString())
         if(element === 1){
             circle.setAttribute("fill", "rgba(120, 120, 255, 1)")
         }

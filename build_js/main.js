@@ -15,22 +15,39 @@ function main_for_anime() {
         alert("Шарики не помещаются");
         return false;
     }
-    var between = (totalLength + diameter) / (Nparticles + 1);
-    for (var i = -1; i < positions.length; i++) {
-        positions[i] = (i + 1) * between - diameter / 2;
-    }
     var velocities = new Array(Nparticles + 1);
-    for (var i = -1; i < velocities.length; i++) {
-        velocities[i] = 0;
+    var between = (totalLength + diameter) / (Nparticles + 1);
+    function discharge() {
+        for (var i = -1; i < positions.length; i++) {
+            positions[i] = (i + 1) * between - diameter / 2;
+        }
+        for (var i = -1; i < velocities.length; i++) {
+            velocities[i] = 0;
+        }
+        velocities[0] = Number(document.forms.gen.v_1.value);
     }
-    velocities[0] = Number(document.forms.gen.v_1.value);
+    discharge();
+    var t0 = gett0(positions, velocities, masses, diameter);
+    discharge();
     var dt = 1000 / Number(document.forms.animef.playrate.value);
-    var positionsHistory = simulate(positions, velocities, masses, dt, diameter, function (now, t0) { return !(now > t0 * Number(document.forms.animef.t_k_t.value)); });
-    // for(let i = 0; i < velocities.length; i++){
-    //     velocities[i] *= -1
-    // }
-    // positionsHistory = simulate(positions, velocities, masses, dt, diameter, (now, t0) => !(now > 9 * t0))
+    var inversion_time = t0 * Number(document.forms.animef.t_k_t.value);
+    var positionsHistory = simulate(positions, velocities, masses, dt, diameter, function (now) { return !(now > inversion_time); });
     anime(positionsHistory, masses, diameter, dt);
+    var colls = createCollisions(positions, velocities, diameter);
+    var artif = Math.min(colls[findSoonestCollisions(colls)[0]] / 2, dt);
+    for (var i = 0; i < Nparticles; i++) {
+        positions[i] += velocities[i] * artif;
+    }
+    console.clear();
+    console.log("velocities: " + velocities);
+    for (var i = 0; i < Nparticles; i++) {
+        velocities[i] *= -1;
+    }
+    console.log("positions: " + positions);
+    console.log("velocities: " + velocities);
+    console.log("start");
+    var positionsHistory2 = simulate(positions, velocities, masses, dt, diameter, function (now) { return !(now > inversion_time + artif); });
+    anime(positionsHistory2, masses, diameter, dt);
     // let Xarr = simpleArray(Nsteps)
     // let Aarr = new Array(Nsteps)
     // let Barr = new Array(Nsteps)

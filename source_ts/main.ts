@@ -17,28 +17,47 @@ function main_for_anime(){
         alert("Шарики не помещаются")
         return false
     }
+    const velocities = new Array(Nparticles + 1)
     const between = (totalLength + diameter) / (Nparticles + 1)
-    for(let i = -1; i < positions.length; i++){
-        positions[i] = (i + 1) * between - diameter / 2
+
+    function discharge() : void{
+        for(let i = -1; i < positions.length; i++){
+            positions[i] = (i + 1) * between - diameter / 2
+        }
+    
+        for(let i = -1; i < velocities.length; i++){
+            velocities[i] = 0
+        }
+        velocities[0] = Number(document.forms.gen.v_1.value)
     }
 
-    const velocities = new Array(Nparticles + 1)
-    for(let i = -1; i < velocities.length; i++){
-        velocities[i] = 0
-    }
-    velocities[0] = Number(document.forms.gen.v_1.value)
+    discharge()
+
+    const t0 = gett0(positions, velocities, masses, diameter)
+    discharge()
 
     const dt = 1000 / Number(document.forms.animef.playrate.value)
-
+    const inversion_time = t0 * Number(document.forms.animef.t_k_t.value)
 
     let positionsHistory = simulate(positions, velocities, masses, dt, diameter, 
-        (now, t0) => !(now > t0 * Number(document.forms.animef.t_k_t.value)))
-
-    // for(let i = 0; i < velocities.length; i++){
-    //     velocities[i] *= -1
-    // }
-    // positionsHistory = simulate(positions, velocities, masses, dt, diameter, (now, t0) => !(now > 9 * t0))
+        (now : number) => !(now > inversion_time))
     anime(positionsHistory, masses, diameter, dt)
+    const colls = createCollisions(positions, velocities, diameter)
+    const artif = Math.min(colls[findSoonestCollisions(colls)[0]] / 2, dt)
+    for(let i = 0; i < Nparticles; i++){
+        positions[i] += velocities[i] * artif
+    }
+    console.clear()
+    console.log(`velocities: ${velocities}`)
+    for(let i = 0; i < Nparticles; i++){
+        velocities[i] *= -1
+    }
+    console.log(`positions: ${positions}`)
+    console.log(`velocities: ${velocities}`)
+    console.log(`start`)
+    let positionsHistory2 = simulate(positions, velocities, masses, dt, diameter, 
+        (now : number) => !(now > inversion_time + artif))
+    anime(positionsHistory2, masses, diameter, dt)
 
 
 
