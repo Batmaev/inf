@@ -1,4 +1,4 @@
-function main_for_anime(){
+function main(what : string){
     const diameter = Number(document.forms.gen.diameter.value)
 
     const Nparticles = 10
@@ -32,34 +32,42 @@ function main_for_anime(){
     const t0 = gett0(positions, velocities, masses, diameter)
     discharge()
 
-    const dt = 1000 / Number(document.forms.animef.playrate.value)
-    const inversion_time = t0 * Number(document.forms.animef.t_k_t.value)
+    if(what === "anime"){
+        const dt = 1000 / Number(document.forms.animef.playrate.value)
+        const inversion_time = t0 * Number(document.forms.animef.t_k_t.value)
 
-    let positionsHistory = simulate(positions, velocities, masses, dt, diameter, 
-        (now : number) => !(now > inversion_time))
+        let positionsHistory = simulate(positions, velocities, masses, dt, diameter, 
+           (now : number) => !(now > inversion_time))
 
-    let anime1 = anime(positionsHistory, masses, diameter, dt)
+        let anime1 = anime(positionsHistory, masses, diameter, dt)
 
-    const colls = createCollisions(positions, velocities, diameter)
-    const artif = Math.min(colls[findSoonestCollisions(colls)[0]] / 2, dt)
-    for(let i = 0; i < Nparticles; i++){
-        positions[i] += velocities[i] * artif
-    }
-    console.clear()
-    console.log(`velocities: ${velocities}`)
-    for(let i = 0; i < Nparticles; i++){
-        velocities[i] *= -1
-    }
-    console.log(`positions: ${positions}`)
-    console.log(`velocities: ${velocities}`)
-    console.log(`start`)
-    let positionsHistory2 = simulate(positions, velocities, masses, dt, diameter, 
-        (now : number) => !(now > inversion_time + artif))
+        //Плохо инвертировать скорости в момент столкновения, нужно чуть-чуть подождать
+        const colls = createCollisions(positions, velocities, diameter)
+        const artif = Math.min(colls[findSoonestCollisions(colls)[0]] / 2, dt)
+        for(let i = 0; i < Nparticles; i++){
+            positions[i] += velocities[i] * artif
+        }
+        for(let i = 0; i < Nparticles; i++){
+            velocities[i] *= -1
+        }
+        velocities[0] += Number(document.forms.animef.v1_err.value)
+
+        let positionsHistory2 = simulate(positions, velocities, masses, dt, diameter, 
+            (now : number) => !(now > inversion_time + artif))
     
-    anime1.then(a =>
-    anime(positionsHistory2, masses, diameter, dt))
+        anime1.then(a => {
+            alert(`Сейчас скорости изменятся на противоположные. Средний модуль скорости ${mean(velocities)} пикс./мс`)
+            anime(positionsHistory2, masses, diameter, dt)}
+        )
+        function mean(velocities : number[]){
+            return velocities.reduce((a, b) => (Math.abs(a) + Math.abs(b))) / Nparticles
+        }
+    }
 
+    if(what === "plot"){
 
+    }
+}
 
 
 
@@ -100,4 +108,4 @@ function main_for_anime(){
     //     {X: Xarr, Y: Barr, color: Bcolor, lines: true},
     // ]
     // n_x_Obj.drawGraph(XYCLsForN_X, 0)
-}
+
