@@ -11,8 +11,6 @@ body{
     background-color: #151515;
     padding: 10px;
     margin: 10px;
-    display: flex;
-    flex-direction: column;
 }
 svg{
     flex-grow: 1;
@@ -24,6 +22,8 @@ polyline{
 }
 .big{
     height: 95vh;
+    display: flex;
+    flex-direction: column;
 }
 .div-label{
     margin: 10px;
@@ -50,9 +50,12 @@ input[type=text]{
     height: 20px;
     border-radius: 25%;
     margin: 5px;
+    margin-right: 10px;
 }
 .oneItem{
     display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
 }
 .butt{
     font-size: 18px;
