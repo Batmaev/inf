@@ -2,6 +2,9 @@ let interval
 
 function anime(positionsHistory, masses, diameter, dt){
     const svg = document.getElementById("anime")
+    while (svg.firstChild) {
+        svg.removeChild(svg.firstChild);
+    }
     const cy = svg.getBoundingClientRect().height / 2
     const circles = []
     //let i = 0
@@ -21,12 +24,14 @@ function anime(positionsHistory, masses, diameter, dt){
     });
 
     let i = 0
+    return new Promise((resolve, reject) =>
     interval = setInterval(() => {
         circles.forEach((circle, index) => 
         circle.setAttribute("cx", positionsHistory[i][index])
         )
         if(++i === positionsHistory.length){
             clearInterval(interval)
+            resolve()
         }
-    }, dt);
+    }, dt))
 }

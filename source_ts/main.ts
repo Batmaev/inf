@@ -1,8 +1,4 @@
 function main_for_anime(){
-    const an = document.getElementById("anime")
-    while (an.firstChild) {
-        an.removeChild(an.firstChild);
-      }
     const diameter = Number(document.forms.gen.diameter.value)
 
     const Nparticles = 10
@@ -12,7 +8,7 @@ function main_for_anime(){
     }
 
     const positions  = new Array(Nparticles + 1) //В момент времени сразу после столкновения
-    const totalLength = an.getBoundingClientRect().width
+    const totalLength = document.getElementById("anime").getBoundingClientRect().width
     if(totalLength <= Nparticles * diameter){
         alert("Шарики не помещаются")
         return false
@@ -41,7 +37,9 @@ function main_for_anime(){
 
     let positionsHistory = simulate(positions, velocities, masses, dt, diameter, 
         (now : number) => !(now > inversion_time))
-    anime(positionsHistory, masses, diameter, dt)
+
+    let anime1 = anime(positionsHistory, masses, diameter, dt)
+
     const colls = createCollisions(positions, velocities, diameter)
     const artif = Math.min(colls[findSoonestCollisions(colls)[0]] / 2, dt)
     for(let i = 0; i < Nparticles; i++){
@@ -57,7 +55,9 @@ function main_for_anime(){
     console.log(`start`)
     let positionsHistory2 = simulate(positions, velocities, masses, dt, diameter, 
         (now : number) => !(now > inversion_time + artif))
-    anime(positionsHistory2, masses, diameter, dt)
+    
+    anime1.then(a =>
+    anime(positionsHistory2, masses, diameter, dt))
 
 
 

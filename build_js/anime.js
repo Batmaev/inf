@@ -1,11 +1,14 @@
-var interval;
+let interval;
 function anime(positionsHistory, masses, diameter, dt) {
-    var svg = document.getElementById("anime");
-    var cy = svg.getBoundingClientRect().height / 2;
-    var circles = [];
+    const svg = document.getElementById("anime");
+    while (svg.firstChild) {
+        svg.removeChild(svg.firstChild);
+    }
+    const cy = svg.getBoundingClientRect().height / 2;
+    const circles = [];
     //let i = 0
-    masses.forEach(function (element) {
-        var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    masses.forEach(element => {
+        let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
         circle.setAttribute("cy", cy.toString());
         circle.setAttribute("r", (diameter / 2).toString());
         if (element === 1) {
@@ -18,13 +21,12 @@ function anime(positionsHistory, masses, diameter, dt) {
         svg.append(circle);
         circles.push(circle);
     });
-    var i = 0;
-    interval = setInterval(function () {
-        circles.forEach(function (circle, index) {
-            return circle.setAttribute("cx", positionsHistory[i][index]);
-        });
+    let i = 0;
+    return new Promise((resolve, reject) => interval = setInterval(() => {
+        circles.forEach((circle, index) => circle.setAttribute("cx", positionsHistory[i][index]));
         if (++i === positionsHistory.length) {
             clearInterval(interval);
+            resolve();
         }
-    }, dt);
+    }, dt));
 }
