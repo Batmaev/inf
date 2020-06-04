@@ -1,4 +1,3 @@
-let interval;
 function anime(positionsHistory, masses, diameter, dt) {
     const svg = document.getElementById("anime");
     while (svg.firstChild) {
@@ -12,16 +11,17 @@ function anime(positionsHistory, masses, diameter, dt) {
         circle.setAttribute("cy", cy.toString());
         circle.setAttribute("r", (diameter / 2).toString());
         if (element === 1) {
-            circle.setAttribute("fill", "rgba(120, 120, 255, 1)");
+            circle.setAttribute("fill", "var(--m1-color)");
         }
         else {
-            circle.setAttribute("fill", "rgba(120, 185, 120, 1)");
+            circle.setAttribute("fill", "var(--m2-color)");
         }
         //circle.setAttribute("cx", positionsHistory[0][i++])
         svg.append(circle);
         circles.push(circle);
     });
     let i = 0;
+    let interval;
     return new Promise((resolve, reject) => interval = setInterval(() => {
         circles.forEach((circle, index) => circle.setAttribute("cx", positionsHistory[i][index]));
         if (++i === positionsHistory.length) {

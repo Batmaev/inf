@@ -1,5 +1,5 @@
 function main(what : string){
-    const diameter = Number(document.forms.gen.diameter.value)
+    const diameter = Number(document.forms['gen'].diameter.value)
 
     const Nparticles = 10
     const masses = new Array (Nparticles) //(Nparticles + 2) //Лишние 2 частицы - это стенки, [-1] и [Nparticles]
@@ -24,7 +24,7 @@ function main(what : string){
         for(let i = -1; i < velocities.length; i++){
             velocities[i] = 0
         }
-        velocities[0] = Number(document.forms.gen.v_1.value)
+        velocities[0] = Number(document.forms['gen'].v_1.value)
     }
 
     discharge()
@@ -33,8 +33,8 @@ function main(what : string){
     discharge()
 
     if(what === "anime"){
-        const dt = 1000 / Number(document.forms.animef.playrate.value)
-        const inversion_time = t0 * Number(document.forms.animef.t_k_t.value)
+        const dt = 1000 / Number(document.forms['animef'].playrate.value)
+        const inversion_time = t0 * Number(document.forms['animef'].t_k_t.value)
 
         let positionsHistory = simulate(positions, velocities, masses, dt, diameter, 
            (now : number) => !(now > inversion_time))
@@ -50,7 +50,7 @@ function main(what : string){
         for(let i = 0; i < Nparticles; i++){
             velocities[i] *= -1
         }
-        velocities[0] += Number(document.forms.animef.v1_err.value)
+        velocities[0] += Number(document.forms['animef'].v1_err.value)
 
         let positionsHistory2 = simulate(positions, velocities, masses, dt, diameter, 
             (now : number) => !(now > inversion_time + artif))
