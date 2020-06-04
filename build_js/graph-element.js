@@ -37,6 +37,7 @@ class DataForGraphList {
 class Graph extends HTMLElement {
     constructor() {
         super();
+        const graphTempl = document.getElementById("graphTempl");
         this.append(graphTempl.content.cloneNode(true));
     }
     connectedCallback() {

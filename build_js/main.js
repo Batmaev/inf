@@ -51,7 +51,7 @@ function main(what) {
     }
     if (what === "plot") {
         discharge();
-        const when_stop = 0;
+        const when_stop = t0 * Number(document.forms['ef'].stop.value);
         const r = energy(positions, velocities, masses, diameter, when_stop);
         const en_Obj = document.getElementById("energy");
         en_Obj.clear();

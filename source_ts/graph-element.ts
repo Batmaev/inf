@@ -52,6 +52,7 @@ class Graph extends HTMLElement{
     svg : SVGSVGElement
     constructor(){
         super()
+        const graphTempl : any = document.getElementById("graphTempl")
         this.append(graphTempl.content.cloneNode(true))
     }
     connectedCallback(){

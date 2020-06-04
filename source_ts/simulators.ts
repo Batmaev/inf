@@ -69,17 +69,17 @@ function energy(positions: number[], velocities: number[], masses: number[], dia
     const m1 = 1
     const m2 = 4
 
-    let m1l : number[]
-    let m2l : number[]
+    let m1l = []
+    let m2l = []
 
     masses.forEach((value, i) => {
         if(value === m1) m1l.push(i)
         else m2l.push(i)
     })
-
-    let e1 : number[]
-    let e2 : number[]
-    let tt : number[]
+console.log(m1l)
+    let e1 = []
+    let e2 = []
+    let tt = []
 
     let time ={
         before_collision : 0,
@@ -103,5 +103,7 @@ function energy(positions: number[], velocities: number[], masses: number[], dia
         updateVelocities(masses, velocities, soon)
         updateCollisions(positions, velocities, collisions, soon, diameter)
     }
+    console.log(velocities)
+    console.log(e1)
     return {t: tt, e1: e1, e2: e2}
 }

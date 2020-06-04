@@ -39,7 +39,6 @@ function createCollisions(positions, velocities, diameter){
     for(let i = 0; i < collisions.length; i++){
         collisions[i] = calculateCollision(positions, velocities, diameter, i)
     }
-    console.log(`collisions: ${collisions}`)
 
     return collisions
 }
@@ -67,7 +66,6 @@ function updateCollisions(positions, velocities, collisions, happened, diameter)
             collisions[i + 1] = calculateCollision(positions, velocities, diameter, i + 1)
         }
     })
-    console.log(`collisions: ${collisions}`)
 }
 
 // function simpleArray(N){
@@ -98,6 +96,5 @@ function findSoonestCollisions(collisions){
             }
         }
     }
-    console.log(`collisions[${ans[0]}] = ${collisions[ans[0]]}`)
     return ans 
 }
