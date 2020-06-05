@@ -64,8 +64,8 @@ function energy(positions, velocities, masses, diameter, when_stop, deltaT) {
             e1.push((remE1 + (time.before_collision - remT) * Math.pow(velocities[1], 2)) * masses[1] / 2 / deltaT);
             //tt.push(i++ * deltaT + deltaT/2)
             tt.push(i++);
-            remE0 = 0
-            remE1 = 0
+            remE0 = remT * velocities[0] ** 2
+            remE1 = remT * velocities[1] ** 2
         }
         else {
             remT += time.before_collision;
