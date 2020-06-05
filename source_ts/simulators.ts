@@ -1,3 +1,18 @@
+function core_of_(time, masses, positions, velocities, diameter, collisions){
+    const Nparticles = masses.length
+    let soon = findSoonestCollisions(collisions)
+    time.before_collision = collisions[soon[0]]
+
+    for(let i = 0; i < Nparticles; i++){
+        positions[i] += velocities[i] * time.before_collision
+    }
+
+    time.of_previous_collision += time.before_collision
+
+    updateVelocities(masses, velocities, soon)
+    updateCollisions(positions, velocities, collisions, soon, diameter)
+}
+
 function gett0(positions: number[], velocities: number[], masses: number[], diameter: number){
 
     const Nparticles = masses.length
@@ -9,23 +24,13 @@ function gett0(positions: number[], velocities: number[], masses: number[], diam
     };
 
     while(velocities[Nparticles - 1] === 0){
-        let soon = findSoonestCollisions(collisions)
-        time.before_collision = collisions[soon[0]]
-
-        for(let i = 0; i < Nparticles; i++){
-            positions[i] += velocities[i] * time.before_collision
-        }
-
-        time.of_previous_collision += time.before_collision
-
-        updateVelocities(masses, velocities, soon)
-        updateCollisions(positions, velocities, collisions, soon, diameter)
+        core_of_(time, masses, positions, velocities, diameter, collisions)
     }
 
     return time.of_previous_collision
 }
 
-function simulate(
+function prepareanimation(
     positions : number[], 
     velocities : number[], 
     masses : number[], 
@@ -42,11 +47,6 @@ function simulate(
     };
 //Мб есть разрыв, когда я запущу время в обратную сторону
     while(time.of_frame < when_stop){
-        if(collisions[0] === NaN){
-            break
-        }
-        console.log(`positions : ${positions}`)
-        console.log(`velocities : ${velocities}`)
 
         let soon = findSoonestCollisions(collisions)
         time.before_collision = collisions[soon[0]]
@@ -62,23 +62,13 @@ function simulate(
     return positionsHistory
 }
 
-function energy(positions: number[], velocities: number[], masses: number[], diameter: number, when_stop : number){
+function energy(positions: number[], velocities: number[], masses: number[], diameter: number, when_stop : number, deltaT : number){
     const Nparticles = masses.length
     const collisions = createCollisions(positions, velocities, diameter)
+    //const N = Math.round(when_stop / deltaT)
 
-    const m1 = 1
-    const m2 = 4
-
-    let m1l = []
-    let m2l = []
-
-    masses.forEach((value, i) => {
-        if(value === m1) m1l.push(i)
-        else m2l.push(i)
-    })
-console.log(m1l)
+    let e0 = []
     let e1 = []
-    let e2 = []
     let tt = []
 
     let time ={
@@ -86,24 +76,32 @@ console.log(m1l)
         of_previous_collision : 0,
     };
 
+    let i = 0
+    let remT = 0
+    let remE0 = 0
+    let remE1 = 0
     while(time.of_previous_collision < when_stop){
-        let soon = findSoonestCollisions(collisions)
-        time.before_collision = collisions[soon[0]]
-
-        for(let i = 0; i < Nparticles; i++){
-            positions[i] += velocities[i] * time.before_collision
+        core_of_(time, masses, positions, velocities, diameter, collisions)
+        if(remT + time.before_collision >= deltaT){
+            remT = remT + time.before_collision - deltaT
+            e0.push((remE0 + (time.before_collision - remT) * velocities[0] ** 2) * masses[0] / 2 / deltaT)
+            e1.push((remE1 + (time.before_collision - remT) * velocities[1] ** 2) * masses[1] / 2 / deltaT)
+            tt.push(i++ * deltaT + deltaT/2)
         }
-
-        e1.push(m1 * m1l.reduce((acc, i) => acc + velocities[i] ** 2) / Nparticles)
-        e2.push(m2 * m2l.reduce((acc, i) => acc + velocities[i] ** 2) / Nparticles)
-        tt.push(time.of_previous_collision)
-
-        time.of_previous_collision += time.before_collision
-
-        updateVelocities(masses, velocities, soon)
-        updateCollisions(positions, velocities, collisions, soon, diameter)
+        else{
+            remT += time.before_collision
+            remE0 += time.before_collision * velocities[0] ** 2
+            remE0 += time.before_collision * velocities[0] ** 2
+        }
     }
-    console.log(velocities)
-    console.log(e1)
-    return {t: tt, e1: e1, e2: e2}
+    return {t: tt, e1: e0, e2: e1}
 }
+
+// function simpleArray(N){
+//     let array = new Array(N)
+
+//     for(let k = 0; k < N; ++k){
+//         array[k] = k + 1;
+//     }
+//     return array
+//}

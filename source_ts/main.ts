@@ -36,7 +36,7 @@ function main(what : string){
         const dt = 1000 / Number(document.forms['animef'].playrate.value)
         const inversion_time = t0 * Number(document.forms['animef'].t_k_t.value)
 
-        let positionsHistory = simulate(positions, velocities, masses, dt, diameter, inversion_time)
+        let positionsHistory = prepareanimation(positions, velocities, masses, dt, diameter, inversion_time)
 
         let anime1 = anime(positionsHistory, masses, diameter, dt)
 
@@ -51,7 +51,7 @@ function main(what : string){
         }
         velocities[0] += Number(document.forms['animef'].v1_err.value)
 
-        let positionsHistory2 = simulate(positions, velocities, masses, dt, diameter, 
+        let positionsHistory2 = prepareanimation(positions, velocities, masses, dt, diameter, 
             inversion_time + artif)
     
         anime1.then(a => {
@@ -66,7 +66,7 @@ function main(what : string){
     if(what === "plot"){
         discharge()
         const when_stop = t0 * Number(document.forms['ef'].stop.value)
-        const r = energy(positions, velocities, masses, diameter, when_stop)
+        const r = energy(positions, velocities, masses, diameter, when_stop, 1)
         const en_Obj : any = document.getElementById("energy")
 
         en_Obj.clear()

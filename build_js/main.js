@@ -28,7 +28,7 @@ function main(what) {
     if (what === "anime") {
         const dt = 1000 / Number(document.forms['animef'].playrate.value);
         const inversion_time = t0 * Number(document.forms['animef'].t_k_t.value);
-        let positionsHistory = simulate(positions, velocities, masses, dt, diameter, inversion_time);
+        let positionsHistory = prepareanimation(positions, velocities, masses, dt, diameter, inversion_time);
         let anime1 = anime(positionsHistory, masses, diameter, dt);
         //Плохо инвертировать скорости в момент столкновения, нужно чуть-чуть подождать
         const colls = createCollisions(positions, velocities, diameter);
@@ -40,7 +40,7 @@ function main(what) {
             velocities[i] *= -1;
         }
         velocities[0] += Number(document.forms['animef'].v1_err.value);
-        let positionsHistory2 = simulate(positions, velocities, masses, dt, diameter, inversion_time + artif);
+        let positionsHistory2 = prepareanimation(positions, velocities, masses, dt, diameter, inversion_time + artif);
         anime1.then(a => {
             alert(`Сейчас скорости изменятся на противоположные. Средний модуль скорости ${mean(velocities)} пикс./мс`);
             anime(positionsHistory2, masses, diameter, dt);
@@ -52,7 +52,7 @@ function main(what) {
     if (what === "plot") {
         discharge();
         const when_stop = t0 * Number(document.forms['ef'].stop.value);
-        const r = energy(positions, velocities, masses, diameter, when_stop);
+        const r = energy(positions, velocities, masses, diameter, when_stop, 1);
         const en_Obj = document.getElementById("energy");
         en_Obj.clear();
         const XYCL = [
