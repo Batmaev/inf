@@ -1,14 +1,3 @@
-function core_of_(time, masses, positions, velocities, diameter, collisions) {
-    const Nparticles = masses.length;
-    let soon = findSoonestCollisions(collisions);
-    time.before_collision = collisions[soon[0]];
-    for (let i = 0; i < Nparticles; i++) {
-        positions[i] += velocities[i] * time.before_collision;
-    }
-    time.of_previous_collision += time.before_collision;
-    updateVelocities(masses, velocities, soon);
-    updateCollisions(positions, velocities, collisions, soon, diameter);
-}
 function gett0(positions, velocities, masses, diameter) {
     const Nparticles = masses.length;
     const collisions = createCollisions(positions, velocities, diameter);
@@ -17,7 +6,14 @@ function gett0(positions, velocities, masses, diameter) {
         of_previous_collision: 0,
     };
     while (velocities[Nparticles - 1] === 0) {
-        core_of_(time, masses, positions, velocities, diameter, collisions);
+        let soon = findSoonestCollisions(collisions);
+        time.before_collision = collisions[soon[0]];
+        for (let i = 0; i < Nparticles; i++) {
+            positions[i] += velocities[i] * time.before_collision;
+        }
+        time.of_previous_collision += time.before_collision;
+        updateVelocities(masses, velocities, soon);
+        updateCollisions(positions, velocities, collisions, soon, diameter);
     }
     return time.of_previous_collision;
 }
@@ -60,18 +56,26 @@ function energy(positions, velocities, masses, diameter, when_stop, deltaT) {
     let remE0 = 0;
     let remE1 = 0;
     while (time.of_previous_collision < when_stop) {
-        core_of_(time, masses, positions, velocities, diameter, collisions);
+        let soon = findSoonestCollisions(collisions);
+        time.before_collision = collisions[soon[0]];
         if (remT + time.before_collision >= deltaT) {
             remT = remT + time.before_collision - deltaT;
             e0.push((remE0 + (time.before_collision - remT) * Math.pow(velocities[0], 2)) * masses[0] / 2 / deltaT);
             e1.push((remE1 + (time.before_collision - remT) * Math.pow(velocities[1], 2)) * masses[1] / 2 / deltaT);
-            tt.push(i++ * deltaT + deltaT / 2);
+            //tt.push(i++ * deltaT + deltaT/2)
+            tt.push(i++);
         }
         else {
             remT += time.before_collision;
             remE0 += time.before_collision * Math.pow(velocities[0], 2);
             remE0 += time.before_collision * Math.pow(velocities[0], 2);
         }
+        for (let i = 0; i < Nparticles; i++) {
+            positions[i] += velocities[i] * time.before_collision;
+        }
+        time.of_previous_collision += time.before_collision;
+        updateVelocities(masses, velocities, soon);
+        updateCollisions(positions, velocities, collisions, soon, diameter);
     }
     return { t: tt, e1: e0, e2: e1 };
 }
