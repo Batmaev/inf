@@ -86,12 +86,18 @@
                         \(t_{остановки} / t_0\)
                     </label>
                 </div>
+                <div class="div-label">
+                    <label>
+                        <input type="text" name="deltaT" value="1">
+                        \(\Delta t / t_0\)
+                    </label>
+                </div>
             </form>
             <div class="div-label">
                 <button onclick="main(`plot`)" class="butt">Построить график</button>
             </div>
         </div>
-        <graph-element name="Средняя энергия" id="energy"></graph-element>
+        <graph-element name="Усреднённая по \(\Delta t)\ энергия \(=f(t))\" id="energy"></graph-element>
     </body>
     <script src="build_js/helpers.js"></script>
     <script src="./build_js/simulators.js"></script>
