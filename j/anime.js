@@ -1,10 +1,13 @@
 function anime(positionsHistory, masses, diameter, dt) {
     const svg = document.getElementById("anime");
+
     while (svg.firstChild) {
         svg.removeChild(svg.firstChild);
     }
+
     const cy = svg.getBoundingClientRect().height / 2;
     const circles = [];
+
     //let i = 0
     masses.forEach(element => {
         let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -20,6 +23,7 @@ function anime(positionsHistory, masses, diameter, dt) {
         svg.append(circle);
         circles.push(circle);
     });
+    
     let i = 0;
     let interval;
     return new Promise((resolve, reject) => interval = setInterval(() => {

@@ -34,20 +34,23 @@ class DataForGraphList {
         return (1 - (Yarr[n] - this.minY) / this.ampY) * this.height;
     }
 }
+
 class Graph extends HTMLElement {
     constructor() {
         super();
         const graphTempl = document.getElementById("graphTempl");
         this.append(graphTempl.content.cloneNode(true));
     }
+
     connectedCallback() {
+        this.svg = this.querySelector("svg");
         const head = this.querySelector(".head");
         katex.render(this.getAttribute("name"), head, {
             strict: false
         });
         //head.innerHTML = this.getAttribute("name")
-        this.svg = this.querySelector("svg");
     }
+
     drawGraph(XYCLs, minY, maxY) {
         //XYLs = [{X, Y, color, lines or dots}]
         const width = this.svg.getBoundingClientRect().width;
@@ -78,6 +81,7 @@ class Graph extends HTMLElement {
             // }
         }
     }
+
     clear() {
         this.svg.textContent = "";
     }

@@ -15,18 +15,23 @@ function updateVelocities(masses, velocities, happened) {
         }
     });
 }
+
 function writeHistory(time, positions, velocities, positionsHistory, dt) {
+
     if (time.of_frame + dt < time.of_previous_collision + time.before_collision) {
         time.of_frame += dt;
         positionsHistory.push(positions.map((value, i) => value + (time.of_frame - time.of_previous_collision) * velocities[i])
             .slice(0, -1)); //В positionsHistory не храним историю стенок
     }
+
     while (time.of_frame + dt < time.of_previous_collision + time.before_collision) {
         time.of_frame += dt;
         positionsHistory.push(positionsHistory[positionsHistory.length - 1].map((value, i) => value + dt * velocities[i]));
     }
+
     time.of_previous_collision += time.before_collision;
 }
+
 function createCollisions(positions, velocities, diameter) {
     const Nparticles = positions.length - 1;
     const collisions = new Array(Nparticles + 1);
@@ -35,6 +40,7 @@ function createCollisions(positions, velocities, diameter) {
     }
     return collisions;
 }
+
 function calculateCollision(positions, velocities, diameter, i) {
     if (velocities[i - 1] - velocities[i] > 0) {
         return (positions[i] - positions[i - 1] - diameter) / (velocities[i - 1] - velocities[i]);
@@ -43,11 +49,13 @@ function calculateCollision(positions, velocities, diameter, i) {
         return -2020;
     }
 }
+
 function updateCollisions(positions, velocities, collisions, happened, diameter) {
     const deltaT = collisions[happened[0]];
     for (let i = 0; i < collisions.length; i++) {
         collisions[i] -= deltaT;
     }
+    
     happened.forEach(i => {
         collisions[i] = calculateCollision(positions, velocities, diameter, i);
         if (i !== 0) {
