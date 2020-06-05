@@ -58,12 +58,18 @@ function energy(positions, velocities, masses, diameter, when_stop, deltaT) {
     while (time.of_previous_collision < when_stop) {
         let soon = findSoonestCollisions(collisions);
         time.before_collision = collisions[soon[0]];
+
         if (remT + time.before_collision >= deltaT) {
             remT = remT + time.before_collision - deltaT;
             e0.push((remE0 + (time.before_collision - remT) * Math.pow(velocities[0], 2)) * masses[0] / 2 / deltaT);
             e1.push((remE1 + (time.before_collision - remT) * Math.pow(velocities[1], 2)) * masses[1] / 2 / deltaT);
-            //tt.push(i++ * deltaT + deltaT/2)
-            tt.push(i++);
+            tt.push(i++ * deltaT + deltaT/2)
+            while(remT - deltaT >= 0){
+                remT -= deltaT
+                e0.push(velocities[0] ** 2 * masses[0] / 2 / deltaT)
+                e1.push(velocities[1] ** 2 * masses[1] / 2 / deltaT)
+                tt.push(i++ * deltaT + deltaT/2)
+            }
             remE0 = remT * velocities[0] ** 2
             remE1 = remT * velocities[1] ** 2
         }
@@ -81,10 +87,3 @@ function energy(positions, velocities, masses, diameter, when_stop, deltaT) {
     }
     return { t: tt, e1: e0, e2: e1 };
 }
-// function simpleArray(N){
-//     let array = new Array(N)
-//     for(let k = 0; k < N; ++k){
-//         array[k] = k + 1;
-//     }
-//     return array
-//}

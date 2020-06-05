@@ -60,7 +60,7 @@ function main(what) {
             { X: r.t, Y: r.e1, color: "var(--m1-color)", lines: true },
             { X: r.t, Y: r.e2, color: "var(--m2-color)", lines: true }
         ];
-        en_Obj.drawGraph(XYCL, 0);
+        en_Obj.drawGraph(XYCL, 0, 0);
     }
 }
 // let Xarr = simpleArray(Nsteps)

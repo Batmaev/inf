@@ -1,5 +1,5 @@
 class DataForGraphList{
-    constructor(XYpairs, width, height, userMinY, userMaxY){
+    constructor(XYpairs, width, height, userMinY, userMinX, userMaxY, userMaxX){
         this.width = width
         this.height = height
 
@@ -28,6 +28,12 @@ class DataForGraphList{
         if(userMinY !== undefined){
             this.minY = Math.min(this.minY, userMinY)
         }
+        if(userMaxY !== undefined){
+            this.maxX = Math.max(this.maxX, userMaxX)
+         }
+         if(userMinY !== undefined){
+             this.minX = Math.min(this.minX, userMinX)
+         }
         this.ampX = this.maxX - this.minX
         this.ampY = this.maxY - this.minY
     }
@@ -55,7 +61,7 @@ class Graph extends HTMLElement{
         this.svg = this.querySelector("svg")
     }
 
-    drawGraph(XYCLs, minY, maxY){
+    drawGraph(XYCLs, minY,minX, maxY, maxX){
         //XYLs = [{X, Y, color, lines or dots}]
         
         const width = this.svg.getBoundingClientRect().width
@@ -63,7 +69,34 @@ class Graph extends HTMLElement{
         // MysvgElement.setAttribute("width", `${Math.round(width)}`)
         // MysvgElement.setAttribute("height", `${Math.round(height)}`)
 
-        let data = new DataForGraphList(XYCLs, width, height, minY, maxY)
+        let data = new DataForGraphList(XYCLs, width, height, minY,minX, maxY, maxX)
+        
+
+        let xexe = document.createElementNS("http://www.w3.org/2000/svg", "line")
+        const x0 = - data.minX / data.ampX * width
+        xexe.setAttribute("x1", x0)
+        xexe.setAttribute("x2", x0)
+        xexe.setAttribute("y1", 0)
+        xexe.setAttribute("y1", height)
+        xexe.setAttribute("stroke", "var(--axes-color)")
+        this.svg.append(xexe)
+
+        xexe = document.createElementNS("http://www.w3.org/2000/svg", "line")
+        const lenin = 10
+        const persik = 0.1
+        xexe.setAttribute("x1", x0 - lenin)
+        xexe.setAttribute("x2", x0 + lenin)
+        xexe.setAttribute("y1", persik * height)
+        xexe.setAttribute("y2", persik * height)
+        xexe.setAttribute("stroke", "var(--axes-color)")
+        this.svg.append(xexe)
+
+        xexe = document.createElementNS("http://www.w3.org/2000/svg", "text")
+        xexe.setAttribute("x", x0 + 2 * lenin)
+        xexe.setAttribute("y", persik * height + 7)
+        xexe.innerHTML = tostd((1 - persik) * data.ampY + data.minY)
+        this.svg.append(xexe)
+
 
         for(let k = 0; k < XYCLs.length; k++){
             let Xarr = XYCLs[k].X
@@ -72,7 +105,7 @@ class Graph extends HTMLElement{
             if(XYCLs[k].lines){
                 let polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline")
                 let str = ""
-                for(let l = 1; l < data.lengths[k]; l++){
+                for(let l = 0; l < data.lengths[k]; l++){
                     str += `${(data.screenX(Xarr, l))},${(data.screenY(Yarr, l))} `
                 }
                 polyline.setAttributeNS(null, "points", str)
@@ -95,3 +128,13 @@ class Graph extends HTMLElement{
     }
 }
 customElements.define("graph-element", Graph);
+
+function tostd(x){
+    if(x === 0){
+        return 0
+    }
+    let pow = Math.round(Math.log10(Math.abs(x)))
+    let mnts = x / 10 ** pow
+    mnts = mnts.toFixed(3)
+    return mnts + " * 10^" + pow
+}

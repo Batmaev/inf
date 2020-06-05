@@ -5,6 +5,7 @@ body{
     font: 25px KaTeX_Main, "Times New Roman", serif;
     --m1-color: rgba(120, 120, 255, 1);
     --m2-color: rgba(120, 185, 120, 1);
+    --axes-color:  rgba(255, 255, 255, 0.8);
 }
 .rect{
     border-radius: 15px;
@@ -77,4 +78,8 @@ input[type=text]{
     #pride{
         float: right;
     } 
+}
+text{
+    font: 15px;
+    fill: var(--axes-color);
 }
