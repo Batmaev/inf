@@ -1,9 +1,6 @@
 function anime(positionsHistory, masses, diameter, dt) {
     const svg = document.getElementById("anime");
-
-    while (svg.firstChild) {
-        svg.removeChild(svg.firstChild);
-    }
+    svg.innerHTML = ""
 
     const cy = svg.getBoundingClientRect().height / 2;
     const circles = [];
@@ -31,6 +28,10 @@ function anime(positionsHistory, masses, diameter, dt) {
         if (++i === positionsHistory.length) {
             clearInterval(interval);
             resolve();
+        }
+        if(!svg.contains(circles[0])){
+            clearInterval(interval);
+            reject()
         }
     }, dt));
 }

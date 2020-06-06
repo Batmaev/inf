@@ -38,7 +38,6 @@ console.log(vx)
     let v2 = vx.map(() => 0)
     let e1 = ex.map(() => 0)
     let e2 = ex.map(() => 0)
-    console.log(v1)
 
 
     let time = {
@@ -50,14 +49,8 @@ console.log(vx)
     for (; k < Ndots / m1l.length; k++) {
         m1l.forEach(i => {
             e1[getEinterval(m1 * velocities[i] ** 2 / 2)]++; 
-            if(k <= 2){
-                console.log(`e = ${m1 * velocities[i] ** 2 / 2}`)
-                console.log(`i = ${getVinterval(velocities[i])}`)
-                console.log(v1[getVinterval(velocities[i])] = v1[getVinterval(velocities[i])] + 1)
-            }
-            else{
-                v1[getVinterval(velocities[i])] = v1[getVinterval(velocities[i])] + 1
-            }
+            v1[getVinterval(velocities[i])]++
+
         })
         m2l.forEach(i => {
             e2[getEinterval(m2 * velocities[i] ** 2 / 2)]++
@@ -77,9 +70,7 @@ console.log(vx)
 
         time.of_previous_collision = 0
     }
-console.log(v1)
-console.log(e1)
-alert(k * m1l.length)
+
 return {v1: v1.map(v => v / k / m1l.length / deltaV), 
     v2: v2.map(v => v / k / m2l.length / deltaV), 
     vx: vx,
