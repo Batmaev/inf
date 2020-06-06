@@ -13,6 +13,7 @@ function main(what) {
     }
     const velocities = new Array(Nparticles + 1);
     const between = (totalLength + diameter) / (Nparticles + 1);
+
     function discharge() {
         for (let i = -1; i < positions.length; i++) {
             positions[i] = (i + 1) * between - diameter / 2;
@@ -22,10 +23,12 @@ function main(what) {
         }
         velocities[0] = Number(document.forms['gen'].v_1.value);
     }
+
     discharge();
     const t0 = gett0(positions, velocities, masses, diameter);
-    discharge();
+
     if (what === "anime") {
+        discharge();
         const dt = 1000 / Number(document.forms['animef'].playrate.value);
         const inversion_time = t0 * Number(document.forms['animef'].t_k_t.value);
         let positionsHistory = prepareanimation(positions, velocities, masses, dt, diameter, inversion_time);
@@ -62,22 +65,22 @@ function main(what) {
         ];
         en_Obj.drawGraph(XYCL, 0, 0);
     }
+    if(what === "distr"){
+        if(positions[0] === undefined){
+            discharge()
+        }
+        let r = distributions(positions, velocities, masses, diameter, Number(document.forms["gen"].v_1.value), Number(document.forms["di"].Nintervals.value), t0, Number(document.forms["di"].Ndots.value))
+
+        const vel_obj = document.getElementById("vel_dist")
+        const XYCLv = [{X: r.vx, Y: r.v1, color: "var(--m1-color)", lines: true},
+                       {X: r.vx, Y: r.v2, color: "var(--m2-color)", lines: true},]
+        vel_obj.clear()
+        vel_obj.drawGraph(XYCLv)
+
+        const en_obj = document.getElementById("en_dist")
+        const XYCLe = [{X: r.ex, Y: r.e1, color: "var(--m1-color)", lines: true},
+                       {X: r.ex, Y: r.e2, color: "var(--m2-color)", lines: true},]
+        en_obj.clear()
+        en_obj.drawGraph(XYCLe)
+    }
 }
-// let Xarr = simpleArray(Nsteps)
-// let Aarr = new Array(Nsteps)
-// let Barr = new Array(Nsteps)
-// Aarr[0] = Aparticles
-// Barr[0] = Bparticles
-// for(let k = 1; k < Nsteps; ++k){
-//     Aresults = simulate(Aarr[k - 1], P_A, AtoB)
-//     Bresults = simulate(Barr[k - 1], P_B, BtoA)
-//     Aarr[k] = Aarr[k - 1] - Aresults.Changed - Aresults.Disappeared + Bresults.Changed
-//     Barr[k] = Barr[k - 1] - Bresults.Changed - Bresults.Disappeared + Aresults.Changed
-// }
-// let n_x_Obj = document.getElementById("n(x)")
-// n_x_Obj.clear()
-// const XYCLsForN_X = [
-//     {X: Xarr, Y: Aarr, color: Acolor, lines: true},
-//     {X: Xarr, Y: Barr, color: Bcolor, lines: true},
-// ]
-// n_x_Obj.drawGraph(XYCLsForN_X, 0)

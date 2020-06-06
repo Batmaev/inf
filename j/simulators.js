@@ -17,6 +17,7 @@ function gett0(positions, velocities, masses, diameter) {
     }
     return time.of_previous_collision;
 }
+
 function prepareanimation(positions, velocities, masses, dt, diameter, when_stop) {
     const Nparticles = masses.length;
     const collisions = createCollisions(positions, velocities, diameter);

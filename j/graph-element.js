@@ -63,7 +63,7 @@ class Graph extends HTMLElement{
         this.svg = this.querySelector("svg")
     }
 
-    drawGraph(XYCLs, minY,minX, maxY, maxX){
+    drawGraph(XYCLs, minY, minX, maxY, maxX){
         //XYLs = [{X, Y, color, lines or dots}]
         
         const width = this.svg.getBoundingClientRect().width
