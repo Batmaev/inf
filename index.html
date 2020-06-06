@@ -82,13 +82,13 @@
             <form id="ef">
                 <div class="div-label">
                     <label>
-                        <input type="text" name="stop" value="5">
+                        <input type="text" name="stop" value="10000">
                         \(t_{остановки} / t_0\)
                     </label>
                 </div>
                 <div class="div-label">
                     <label>
-                        <input type="text" name="deltaT" value="1">
+                        <input type="text" name="deltaT" value="100">
                         \(\Delta t / t_0\)
                     </label>
                 </div>
@@ -97,7 +97,12 @@
                 <button onclick="main(`plot`)" class="butt">Построить график</button>
             </div>
         </div>
-        <graph-element name="Усреднённая\ по\ \Delta t\ энергия =f(t)" id="energy"></graph-element>
+        <graph-element name="Усреднённая по <span>\Delta t</span> энергия <span>=f(t)</span>" id="energy"></graph-element>
+        <div class="rect">
+            <button onclick="main(`distr`)" class="butt">Построить распределения</button>
+        </div>
+        <graph-element name="Распределение по скоростям" id="vel_dist"></graph-element>
+        <graph-element name="Распределение по энергиям" id="en_dist"></graph-element>
     </body>
     <script src="./j/helpers.js"></script>
     <script src="./j/simulators.js"></script>

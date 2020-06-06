@@ -52,10 +52,12 @@ class Graph extends HTMLElement{
     }
     connectedCallback(){
         const head = this.querySelector(".head")
-        katex.render(this.getAttribute("name"), head, {
-            strict: false
+        head.innerHTML = this.getAttribute("name")
+        head.querySelectorAll("span").forEach(el => {
+            katex.render(el.innerHTML, el, {
+                strict: false
+            })
         })
-        // head.innerHTML = this.getAttribute("name")
         // window.renderMathInElement(head)
 
         this.svg = this.querySelector("svg")
