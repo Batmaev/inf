@@ -3,8 +3,8 @@ body{
     color: white;
     margin: 0px;
     font: 25px KaTeX_Main, "Times New Roman", serif;
-    --m1-color: rgba(120, 120, 255, 1);
-    --m2-color: rgba(120, 185, 120, 1);
+    --m1-color: rgb(47, 201, 150);
+    --m2-color: rgba(10, 132, 255, 1);
     --axes-color:  rgba(255, 255, 255, 0.8);
 }
 .rect{
