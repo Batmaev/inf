@@ -139,7 +139,7 @@ function tostd(x){
     let mnts = x / 10 ** pow
     mnts = mnts.toFixed(3)
     if(pow >= -1 && pow <= 2){
-        return (Number(mnts) * 10 ** pow).toString()
+        return x.toFixed(3)
     }
     return mnts + " * 10^" + pow
 }
