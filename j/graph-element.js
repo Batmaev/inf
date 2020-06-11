@@ -28,10 +28,10 @@ class DataForGraphList{
         if(userMinY !== undefined){
             this.minY = Math.min(this.minY, userMinY)
         }
-        if(userMaxY !== undefined){
+        if(userMaxX !== undefined){
             this.maxX = Math.max(this.maxX, userMaxX)
          }
-         if(userMinY !== undefined){
+         if(userMinX !== undefined){
              this.minX = Math.min(this.minX, userMinX)
          }
         this.ampX = this.maxX - this.minX

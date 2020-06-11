@@ -75,12 +75,12 @@ function main(what) {
         const XYCLv = [{X: r.vx, Y: r.v1, color: "var(--m1-color)", lines: true},
                        {X: r.vx, Y: r.v2, color: "var(--m2-color)", lines: true},]
         vel_obj.clear()
-        vel_obj.drawGraph(XYCLv)
+        vel_obj.drawGraph(XYCLv, 0)
 
         const en_obj = document.getElementById("en_dist")
         const XYCLe = [{X: r.ex, Y: r.e1, color: "var(--m1-color)", lines: true},
                        {X: r.ex, Y: r.e2, color: "var(--m2-color)", lines: true},]
         en_obj.clear()
-        en_obj.drawGraph(XYCLe)
+        en_obj.drawGraph(XYCLe, 0, 0)
     }
 }
