@@ -10,8 +10,6 @@ function distributions(positions, velocities, masses, diameter, v0, Nintervals, 
         vx[y] = y * deltaV - v0 + deltaV/2
         ex[y] = y * deltaE + deltaE/2
     }
-console.log(`vx`)
-console.log(vx)
 
     function getEinterval(e){
         return Math.floor(e / deltaE)

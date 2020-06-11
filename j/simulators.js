@@ -19,28 +19,34 @@ function gett0(positions, velocities, masses, diameter) {
 }
 
 function prepareanimation(positions, velocities, masses, dt, diameter, when_stop) {
+    const positionsHistory = [];
+    core_of(positions, velocities, masses, diameter, when_stop, 
+        (time, positions, velocities) => writeHistory(time, positions, velocities, positionsHistory, dt))
+    return positionsHistory;
+}
+
+function core_of(positions, velocities, masses, diameter, when_stop, foo) {
     const Nparticles = masses.length;
     const collisions = createCollisions(positions, velocities, diameter);
-    const positionsHistory = [];
-    positionsHistory[0] = positions.slice(0, -1);
     let time = {
         before_collision: 0,
         of_frame: 0,
         of_previous_collision: 0,
     };
     //Мб есть разрыв, когда я запущу время в обратную сторону
-    while (time.of_frame < when_stop) {
+    while (time.of_previous_collision < when_stop) {
         let soon = findSoonestCollisions(collisions);
         time.before_collision = collisions[soon[0]];
-        writeHistory(time, positions, velocities, positionsHistory, dt);
+        foo(time, positions, velocities)
         for (let i = 0; i < Nparticles; i++) {
             positions[i] += velocities[i] * time.before_collision;
         }
         updateVelocities(masses, velocities, soon);
         updateCollisions(positions, velocities, collisions, soon, diameter);
     }
-    return positionsHistory;
+
 }
+
 function energy(positions, velocities, masses, diameter, when_stop, deltaT) {
     const Nparticles = masses.length;
     const collisions = createCollisions(positions, velocities, diameter);
