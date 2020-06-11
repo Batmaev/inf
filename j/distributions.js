@@ -76,3 +76,15 @@ return {v1: v1.map(v => v / k / m1l.length / deltaV),
     e2: e2.map(e => e / k / m2l.length / deltaE), 
     ex: ex}
 }
+
+function theory(masses, v0, vx, ex){
+    const Eav = masses[0] * v0 ** 2 / 2 / masses.length
+    const A = 1 / 2 / Eav
+    const m1 = masses[0]
+    const m2 = masses[1]
+    return {
+        e : ex.map(e => A * Math.exp(-e / 2/Eav)),
+        v1: vx.map(v => A * m1 * Math.abs(v) * Math.exp(- m1 * v ** 2 / 4 / Eav)),
+        v2: vx.map(v => A * m2 * Math.abs(v) * Math.exp(- m2 * v ** 2 / 4 / Eav))
+    }
+}

@@ -69,17 +69,25 @@ function main(what) {
         if(positions[0] === undefined){
             discharge()
         }
-        let r = distributions(positions, velocities, masses, diameter, Number(document.forms["gen"].v_1.value), Number(document.forms["di"].Nintervals.value), t0, Number(document.forms["di"].Ndots.value))
+        const v0 =  Number(document.forms["gen"].v_1.value)
+        const Nintervals = Number(document.forms["di"].Nintervals.value)
+        let r = distributions(positions, velocities, masses, diameter,v0, Nintervals, t0, Number(document.forms["di"].Ndots.value))
+        let th = theory(masses, v0, r.vx, r.ex)
 
         const vel_obj = document.getElementById("vel_dist")
-        const XYCLv = [{X: r.vx, Y: r.v1, color: "var(--m1-color)", lines: true},
-                       {X: r.vx, Y: r.v2, color: "var(--m2-color)", lines: true},]
+        const XYCLv = [
+            {X: r.vx, Y: th.v1, color: "var(--th-color)", lines: true},
+            {X: r.vx, Y: th.v2, color: "var(--th-color)", lines: true},
+            {X: r.vx, Y: r.v1, color: "var(--m1-color)", lines: true},
+            {X: r.vx, Y: r.v2, color: "var(--m2-color)", lines: true},]
         vel_obj.clear()
         vel_obj.drawGraph(XYCLv, 0)
 
         const en_obj = document.getElementById("en_dist")
-        const XYCLe = [{X: r.ex, Y: r.e1, color: "var(--m1-color)", lines: true},
-                       {X: r.ex, Y: r.e2, color: "var(--m2-color)", lines: true},]
+        const XYCLe = [
+            {X: r.ex, Y: th.e, color: "var(--th-color)", lines: true},
+            {X: r.ex, Y: r.e1, color: "var(--m1-color)", lines: true},
+            {X: r.ex, Y: r.e2, color: "var(--m2-color)", lines: true},]
         en_obj.clear()
         en_obj.drawGraph(XYCLe, 0, 0)
     }
