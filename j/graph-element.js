@@ -65,14 +65,14 @@ class Graph extends HTMLElement{
 
     drawGraph(XYCLs, minY, minX, maxY, maxX){
         //XYLs = [{X, Y, color, lines or dots}]
-        
+
         const width = this.svg.getBoundingClientRect().width
         const height = this.svg.getBoundingClientRect().height
         // MysvgElement.setAttribute("width", `${Math.round(width)}`)
         // MysvgElement.setAttribute("height", `${Math.round(height)}`)
 
         let data = new DataForGraphList(XYCLs, width, height, minY,minX, maxY, maxX)
-        
+
 
         let xexe = document.createElementNS("http://www.w3.org/2000/svg", "line")
         const x0 = - data.minX / data.ampX * width
@@ -138,5 +138,8 @@ function tostd(x){
     let pow = Math.round(Math.log10(Math.abs(x)))
     let mnts = x / 10 ** pow
     mnts = mnts.toFixed(3)
+    if(pow >= -1 && pow <= 2){
+        return (Number(mnts) * 10 ** pow).toString()
+    }
     return mnts + " * 10^" + pow
 }
