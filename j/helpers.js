@@ -28,8 +28,6 @@ function writeHistory(time, positions, velocities, positionsHistory, dt) {
         time.of_frame += dt;
         positionsHistory.push(positionsHistory[positionsHistory.length - 1].map((value, i) => value + dt * velocities[i]));
     }
-
-    time.of_previous_collision += time.before_collision;
 }
 
 function createCollisions(positions, velocities, diameter) {
