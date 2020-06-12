@@ -33,9 +33,9 @@ function main(what) {
 
     discharge();
     const t0 = gett0(mpvdn);
+    discharge()
 
     if (what === "anime") {
-        discharge();
 
         const dt = 1000 / Number(document.forms['animef'].playrate.value);
         const inversion_time = t0 * Number(document.forms['animef'].t_k_t.value);
@@ -67,7 +67,6 @@ function main(what) {
     }
 
     if (what === "plot") {
-        discharge();
         const when_stop = t0 * Number(document.forms['ef'].stop.value);
         const deltaT = t0 * Number(document.forms['ef'].deltaT.value);
 
@@ -83,9 +82,6 @@ function main(what) {
     }
 
     if(what === "distr"){
-        if(positions[0] === undefined){
-            discharge()
-        }
         const v0 =  Number(document.forms["gen"].v_1.value)
         const Nintervals = Number(document.forms["di"].Nintervals.value)
 
@@ -105,7 +101,8 @@ function main(what) {
         const XYCLe = [
             {X: r.ex, Y: th.e, color: "var(--th-color)", lines: true},
             {X: r.ex, Y: r.e1, color: "var(--m1-color)", lines: true},
-            {X: r.ex, Y: r.e2, color: "var(--m2-color)", lines: true},]
+            {X: r.ex, Y: r.e2, color: "var(--m2-color)", lines: true},
+        ]
         en_obj.clear()
         en_obj.drawGraph(XYCLe, 0, 0)
     }
