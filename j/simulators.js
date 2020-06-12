@@ -1,24 +1,22 @@
-function gett0(positions, velocities, masses, diameter) {
-    const Nparticles = masses.length
+function gett0(mpvdn) {
     let t = {t: 0.1}
-    core_of(positions, velocities, masses, diameter,
-        ()   => velocities[Nparticles - 1] == 0,
+    core_of(mpvdn,
+        ()   => mpvdn.velocities[mpvdn.Nparticles - 1] == 0,
         time => t.t = time.of_previous_collision)
 
     return t.t;
 }
 
-function prepareanimation(positions, velocities, masses, dt, diameter, when_stop) {
+function prepareanimation(mpvdn, dt, when_stop) {
     const positionsHistory = [];
-    core_of(positions, velocities, masses, diameter, 
+    core_of(mpvdn, 
         time => time.of_previous_collision < when_stop, 
-        time => writeHistory(time, positions, velocities, positionsHistory, dt))
+        time => writeHistory(mpvdn, time, positionsHistory, dt))
     return positionsHistory;
 }
 
-function core_of(positions, velocities, masses, diameter, continue_condition, foo) {
-    const Nparticles = masses.length;
-    const collisions = createCollisions(positions, velocities, diameter);
+function core_of(mpvdn, continue_condition, foo) {
+    const collisions = createCollisions(mpvdn);
     let time = {
         before_collision: 0,
         of_frame: 0,
@@ -30,15 +28,15 @@ function core_of(positions, velocities, masses, diameter, continue_condition, fo
         time.before_collision = collisions[soon[0]];
         foo(time)
         time.of_previous_collision += time.before_collision
-        for (let i = 0; i < Nparticles; i++) {
-            positions[i] += velocities[i] * time.before_collision;
+        for (let i = 0; i < mpvdn.Nparticles; i++) {
+            mpvdn.positions[i] += mpvdn.velocities[i] * time.before_collision;
         }
-        updateVelocities(masses, velocities, soon);
-        updateCollisions(positions, velocities, collisions, soon, diameter);
+        updateVelocities(mpvdn, soon);
+        updateCollisions(mpvdn, collisions, soon);
     }
 }
 
-function energy(positions, velocities, masses, diameter, when_stop, deltaT) {
+function energy(mpvdn, when_stop, deltaT) {
 
     let e0 = [];
     let e1 = [];
@@ -49,27 +47,27 @@ function energy(positions, velocities, masses, diameter, when_stop, deltaT) {
         E0: 0, 
         E1: 0,
     }
-core_of(positions, velocities, masses, diameter, 
+core_of(mpvdn, 
     time => time.of_previous_collision < when_stop,
     time => {
         if (rem.t + time.before_collision >= deltaT) {
             rem.t = rem.t + time.before_collision - deltaT;
-            e0.push((rem.E0 + (time.before_collision - rem.t) * velocities[0]**2) * masses[0] / 2 / deltaT);
-            e1.push((rem.E1 + (time.before_collision - rem.t) * velocities[1]**2) * masses[1] / 2 / deltaT);
+            e0.push((rem.E0 + (time.before_collision - rem.t) * mpvdn.velocities[0]**2) * mpvdn.masses[0] / 2 / deltaT);
+            e1.push((rem.E1 + (time.before_collision - rem.t) * mpvdn.velocities[1]**2) * mpvdn.masses[1] / 2 / deltaT);
             tt.push(rem.i++ * deltaT + deltaT/2)
             while(rem.t - deltaT >= 0){
                 rem.t -= deltaT
-                e0.push(velocities[0] ** 2 * masses[0] / 2 / deltaT)
-                e1.push(velocities[1] ** 2 * masses[1] / 2 / deltaT)
-                tt.push(rem.i++ * deltaT + deltaT/2)
+                e0.push(mpvdn.velocities[0] ** 2 * mpvdn.masses[0] / 2 / deltaT)
+                e1.push(mpvdn.velocities[1] ** 2 * mpvdn.masses[1] / 2 / deltaT)
+                tt.push(mpvdn.rem.i++ * deltaT + deltaT/2)
             }
-            rem.E0 = rem.t * velocities[0] ** 2
-            rem.E1 = rem.t * velocities[1] ** 2
+            rem.E0 = rem.t * mpvdn.velocities[0] ** 2
+            rem.E1 = rem.t * mpvdn.velocities[1] ** 2
         }
         else {
             rem.t += time.before_collision;
-            rem.E0 += time.before_collision * velocities[0] ** 2
-            rem.E1 += time.before_collision * velocities[1] ** 2
+            rem.E0 += time.before_collision * mpvdn.velocities[0] ** 2
+            rem.E1 += time.before_collision * mpvdn.velocities[1] ** 2
         }
     })
 

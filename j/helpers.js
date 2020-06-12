@@ -1,10 +1,12 @@
-function updateVelocities(masses, velocities, happened) {
-    const Nparticles = masses.length;
+function updateVelocities(mpvdn, happened) {
+    const masses = mpvdn.masses
+    const velocities = mpvdn.velocities
+
     happened.forEach(i => {
         if (i === 0) {
             velocities[0] *= -1;
         }
-        else if (i === Nparticles) {
+        else if (i === mpvdn.Nparticles) {
             velocities[i - 1] *= -1;
         }
         else {
@@ -16,7 +18,9 @@ function updateVelocities(masses, velocities, happened) {
     });
 }
 
-function writeHistory(time, positions, velocities, positionsHistory, dt) {
+function writeHistory(mpvdn, time, positionsHistory, dt) {
+    const positions = mpvdn.positions
+    const velocities = mpvdn.velocities
 
     if (time.of_frame + dt < time.of_previous_collision + time.before_collision) {
         time.of_frame += dt;
@@ -30,16 +34,18 @@ function writeHistory(time, positions, velocities, positionsHistory, dt) {
     }
 }
 
-function createCollisions(positions, velocities, diameter) {
-    const Nparticles = positions.length - 1;
-    const collisions = new Array(Nparticles + 1);
+function createCollisions(mpvdn) {
+    const collisions = new Array(mpvdn.Nparticles + 1);
     for (let i = 0; i < collisions.length; i++) {
-        collisions[i] = calculateCollision(positions, velocities, diameter, i);
+        collisions[i] = calculateCollision(mpvdn, i);
     }
     return collisions;
 }
 
-function calculateCollision(positions, velocities, diameter, i) {
+function calculateCollision(mpvdn, i) {
+    const positions = mpvdn.positions
+    const velocities = mpvdn.velocities
+    const diameter = mpvdn.diameter
     if (velocities[i - 1] - velocities[i] > 0) {
         return (positions[i] - positions[i - 1] - diameter) / (velocities[i - 1] - velocities[i]);
     }
@@ -48,29 +54,23 @@ function calculateCollision(positions, velocities, diameter, i) {
     }
 }
 
-function updateCollisions(positions, velocities, collisions, happened, diameter) {
+function updateCollisions(mpvdn, collisions, happened) {
     const deltaT = collisions[happened[0]];
     for (let i = 0; i < collisions.length; i++) {
         collisions[i] -= deltaT;
     }
     
     happened.forEach(i => {
-        collisions[i] = calculateCollision(positions, velocities, diameter, i);
+        collisions[i] = calculateCollision(mpvdn, i);
         if (i !== 0) {
-            collisions[i - 1] = calculateCollision(positions, velocities, diameter, i - 1);
+            collisions[i - 1] = calculateCollision(mpvdn, i - 1);
         }
         if (i + 1 != collisions.length) {
-            collisions[i + 1] = calculateCollision(positions, velocities, diameter, i + 1);
+            collisions[i + 1] = calculateCollision(mpvdn, i + 1);
         }
     });
 }
-// function simpleArray(N){
-//     let array = new Array(N)
-//     for(let k = 0; k < N; ++k){
-//         array[k] = k + 1;
-//     }
-//     return array
-// }
+
 function findSoonestCollisions(collisions) {
     let ans = [];
     let min_time = NaN;

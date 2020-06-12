@@ -1,8 +1,8 @@
-function distributions(positions, velocities, masses, diameter, v0, Nintervals, t0, Ndots) {
+function distributions(mpvdn, v0, Nintervals, t0, Ndots) {
 
     v0 = Math.abs(v0)
-    const deltaV = 2 * Math.sqrt(masses[0]) * v0 / Nintervals
-    const deltaE = masses[0] * v0 ** 2 / 2 / Nintervals
+    const deltaV = 2 * Math.sqrt(mpvdn.masses[0]) * v0 / Nintervals
+    const deltaE = mpvdn.masses[0] * v0 ** 2 / 2 / Nintervals
     
     let vx = []
     let ex = []
@@ -18,8 +18,7 @@ function distributions(positions, velocities, masses, diameter, v0, Nintervals, 
         return Math.floor((v + v0) / deltaV)
     }
 
-    const Nparticles = masses.length;
-    const collisions = createCollisions(positions, velocities, diameter);
+    const collisions = createCollisions(mpvdn);
 
     const m1 = 1
     const m2 = 4
@@ -27,7 +26,7 @@ function distributions(positions, velocities, masses, diameter, v0, Nintervals, 
     let m1l = []
     let m2l = []
 
-    masses.forEach((value, i) => {
+    mpvdn.masses.forEach((value, i) => {
         if(value === m1) m1l.push(i)
         else m2l.push(i)
     })
@@ -46,24 +45,26 @@ function distributions(positions, velocities, masses, diameter, v0, Nintervals, 
     let k = 0
     for (; k < Ndots / m1l.length; k++) {
         m1l.forEach(i => {
-            e1[getEinterval(m1 * velocities[i] ** 2 / 2)]++; 
-            v1[getVinterval(velocities[i])]++
+            e1[getEinterval(m1 * mpvdn.velocities[i] ** 2 / 2)]++; 
+            v1[getVinterval(mpvdn.velocities[i])]++
 
         })
         m2l.forEach(i => {
-            e2[getEinterval(m2 * velocities[i] ** 2 / 2)]++
-            v2[getVinterval(velocities[i])]++
+            e2[getEinterval(m2 * mpvdn.velocities[i] ** 2 / 2)]++
+            v2[getVinterval(mpvdn.velocities[i])]++
         })
 
         while (time.of_previous_collision <= t0) {
             let soon = findSoonestCollisions(collisions);
             time.before_collision = collisions[soon[0]];
-            for (let i = 0; i < Nparticles; i++) {
-                positions[i] += velocities[i] * time.before_collision;
+
+            for (let i = 0; i < mpvdn.Nparticles; i++) {
+                mpvdn.positions[i] += mpvdn.velocities[i] * time.before_collision;
             }
+
             time.of_previous_collision += time.before_collision;
-            updateVelocities(masses, velocities, soon);
-            updateCollisions(positions, velocities, collisions, soon, diameter);
+            updateVelocities(mpvdn, soon);
+            updateCollisions(mpvdn, collisions, soon);
         }
 
         time.of_previous_collision = 0
