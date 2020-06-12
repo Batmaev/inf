@@ -44,15 +44,6 @@ function distributions(mpvdn, v0, Nintervals, t0, Ndots) {
 
     let k = 0
     for (; k < Ndots / m1l.length; k++) {
-        m1l.forEach(i => {
-            e1[getEinterval(m1 * mpvdn.velocities[i] ** 2 / 2)]++; 
-            v1[getVinterval(mpvdn.velocities[i])]++
-
-        })
-        m2l.forEach(i => {
-            e2[getEinterval(m2 * mpvdn.velocities[i] ** 2 / 2)]++
-            v2[getVinterval(mpvdn.velocities[i])]++
-        })
 
         while (time.of_previous_collision <= t0) {
             let soon = findSoonestCollisions(collisions);
@@ -66,8 +57,17 @@ function distributions(mpvdn, v0, Nintervals, t0, Ndots) {
             updateVelocities(mpvdn, soon);
             updateCollisions(mpvdn, collisions, soon);
         }
-
+        
         time.of_previous_collision = 0
+
+        m1l.forEach(i => {
+            e1[getEinterval(m1 * mpvdn.velocities[i] ** 2 / 2)]++; 
+            v1[getVinterval(mpvdn.velocities[i])]++
+        })
+        m2l.forEach(i => {
+            e2[getEinterval(m2 * mpvdn.velocities[i] ** 2 / 2)]++
+            v2[getVinterval(mpvdn.velocities[i])]++
+        })
     }
 
 return {v1: v1.map(v => v / k / m1l.length / deltaV), 
