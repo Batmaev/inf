@@ -1,20 +1,3 @@
-function gett0(mpvdn) {
-    let t = {t: 0.1}
-    core_of(mpvdn,
-        ()   => mpvdn.velocities[mpvdn.Nparticles - 1] == 0,
-        time => t.t = time.of_previous_collision)
-
-    return t.t;
-}
-
-function prepareanimation(mpvdn, dt, when_stop) {
-    const positionsHistory = [];
-    core_of(mpvdn, 
-        time => time.of_previous_collision < when_stop, 
-        time => writeHistory(mpvdn, time, positionsHistory, dt))
-    return positionsHistory;
-}
-
 function core_of(mpvdn, continue_condition, foo) {
     const collisions = createCollisions(mpvdn);
     let time = {
@@ -34,6 +17,23 @@ function core_of(mpvdn, continue_condition, foo) {
         updateVelocities(mpvdn, soon);
         updateCollisions(mpvdn, collisions, soon);
     }
+}
+
+function gett0(mpvdn) {
+    let t = {t: 0.1}
+    core_of(mpvdn,
+        ()   => mpvdn.velocities[mpvdn.Nparticles - 1] == 0,
+        time => t.t = time)
+
+    return t.t.of_previous_collision;
+}
+
+function prepareanimation(mpvdn, dt, when_stop) {
+    const positionsHistory = [];
+    core_of(mpvdn, 
+        time => time.of_previous_collision < when_stop, 
+        time => writeHistory(mpvdn, time, positionsHistory, dt))
+    return positionsHistory;
 }
 
 function energy(mpvdn, when_stop, deltaT) {
@@ -59,13 +59,13 @@ core_of(mpvdn,
                 rem.t -= deltaT
                 e0.push(mpvdn.velocities[0] ** 2 * mpvdn.masses[0] / 2 / deltaT)
                 e1.push(mpvdn.velocities[1] ** 2 * mpvdn.masses[1] / 2 / deltaT)
-                tt.push(mpvdn.rem.i++ * deltaT + deltaT/2)
+                tt.push(rem.i++ * deltaT + deltaT/2)
             }
             rem.E0 = rem.t * mpvdn.velocities[0] ** 2
             rem.E1 = rem.t * mpvdn.velocities[1] ** 2
         }
         else {
-            rem.t += time.before_collision;
+            rem.t  += time.before_collision;
             rem.E0 += time.before_collision * mpvdn.velocities[0] ** 2
             rem.E1 += time.before_collision * mpvdn.velocities[1] ** 2
         }
