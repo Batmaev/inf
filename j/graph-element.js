@@ -135,7 +135,7 @@ function tostd(x){
     if(x === 0){
         return 0
     }
-    let pow = Math.round(Math.log10(Math.abs(x)))
+    let pow = Math.floor(Math.log10(Math.abs(x)))
     let mnts = x / 10 ** pow
     mnts = mnts.toFixed(3)
     if(pow >= -1 && pow <= 2){
