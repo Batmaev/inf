@@ -1,3 +1,25 @@
+/**
+ * @returns {object} \{
+ * 
+ * -- vx: равномерно разбросанные точки от -v0 до +v0
+ * 
+ * -- v1: оценка плотности вероятности скорости шарика массы m1 = 1 (v1[i] = prdensity(vx[i]))
+ * 
+ * -- v2
+ * 
+ * -- ex: равномерно разбросанные точки от 0 до E_max = m1 * v0^2 / 2
+ * 
+ * -- e1: оценка плотности вероятности энергии произвольного шарика массы m1
+ * 
+ * -- e2
+ * 
+ * \}
+ * @param {object} mpvdn
+ * @param {number} v0 скорость нулевого шарика в нулевой момент времени
+ * @param {number} Nintervals 
+ * @param {number} t0 время, за которое состояние "забудется"
+ * @param {*} Ndots 
+ */
 function distributions(mpvdn, v0, Nintervals, t0, Ndots) {
 
     v0 = Math.abs(v0)
@@ -78,6 +100,11 @@ return {v1: v1.map(v => v / k / m1l.length / deltaV),
     ex: ex}
 }
 
+/**
+ * Теоретические распределения вероятностей скоростей и энергии молекул газа в одномерном мире 
+ * @param {[number]} vx точки, в которых надо считать плотность вероятности 
+ * @param {[number]} ex 
+ */
 function theory(masses, v0, vx, ex){
     const m1 = 1
     const m2 = 4

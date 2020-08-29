@@ -5,6 +5,10 @@ class DataForGraphList{
 
         this.lengths = new Array(XYpairs.length)
 
+        /*Далее переусложнённый код,
+        чтобы найти максимальное и минимальное значения X и Y.
+        Я просто подумал, что написать Math.max(...X) недостаточно эффективно
+        */
         this.maxX = this.minX = XYpairs[0].X[0]
         this.maxY = this.minY = XYpairs[0].Y[0]
        for(let k = 0; k < XYpairs.length; k++){
@@ -51,6 +55,10 @@ class Graph extends HTMLElement{
         this.append(graphTempl.content.cloneNode(true))
     }
     connectedCallback(){
+        // Я хотел просто сделать window.renderMathInElement(head)
+        // Но работал только katex.render()
+        // Он плохо воспринимал пробелы и кириллицу, 
+        // поэтому пришлось каждую формулу писать в своём <span> и рендерить эти <span> изолированно 
         const head = this.querySelector(".head")
         head.innerHTML = this.getAttribute("name")
         head.querySelectorAll("span").forEach(el => {
@@ -58,11 +66,21 @@ class Graph extends HTMLElement{
                 strict: false
             })
         })
-        // window.renderMathInElement(head)
 
         this.svg = this.querySelector("svg")
     }
 
+    /**
+     * @param {[{X : [number]; Y: number; color: string; lines: boolean}]} XYCLs 
+     * Если XYCLs[i].lines == true, то точки графика будут соединены линиями.
+     * Если false, то это будут просто точки, но эта опция не реализована. 
+     * Также нереализовано отключение оси Y и метки на ней.
+     * @param {number} [minY] Координата самой нижней точки, которая помещается на графике.
+     * Если не указано, то это самая нижняя точка во входных данных 
+     * @param {number} [minX] 
+     * @param {number} [maxY] 
+     * @param {number} [maxX] 
+     */
     drawGraph(XYCLs, minY, minX, maxY, maxX){
         //XYLs = [{X, Y, color, lines or dots}]
 
@@ -115,12 +133,7 @@ class Graph extends HTMLElement{
                 this.svg.append(polyline)
             }
             else{
-                ctx.fillStyle = XYCLs[k].color
-                const HALF_DOT_SIZE = 3
-                for(let l = 0; l < data.lengths[k]; l++){
-                    ctx.fillRect(data.screenX(Xarr, l) - HALF_DOT_SIZE, data.screenY(Yarr, l) - HALF_DOT_SIZE,
-                     2 * HALF_DOT_SIZE, 2 * HALF_DOT_SIZE)
-                }
+                alert("Режим точек не реализован")
             }
         }
     }
@@ -131,9 +144,12 @@ class Graph extends HTMLElement{
 }
 customElements.define("graph-element", Graph);
 
+/**@returns строку, в которой число записано более-менее аккуратно
+ * @param {number} x
+ */
 function tostd(x){
     if(x === 0){
-        return 0
+        return "0"
     }
     let pow = Math.floor(Math.log10(Math.abs(x)))
     let mnts = x / 10 ** pow

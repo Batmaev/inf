@@ -1,23 +1,46 @@
+/**
+ * @param {string} what = "anime" | "plot" | "distr":
+ * 
+ * "anime" - чтобы запустить анимацию со сталкивающимися шариками
+ * 
+ * "plot"  - чтобы нарисовать график зависимости от времени усреднённой по времени энергии 
+ *  
+ * "distr" - чтобы нарисовать распределения по скоростям и энергиям
+ */
 function main(what) {
     const diameter = Number(document.forms['gen'].diameter.value);
     const Nparticles = Number(document.forms['gen'].Nparticles.value)
     const masses = new Array(Nparticles); 
-
+    
     for (let i = 0; i < Nparticles; i++) {
         masses[i] = i % 2 ? 4 : 1;
     }
-
-    //На самом деле (Nparticles + 2) //Лишние 2 частицы - это стенки, [-1] и [Nparticles]
-    const positions = new Array(Nparticles + 1); //В момент времени сразу после столкновения
+    
+    /**
+     * [number] - позиции частиц сразу после очередного столкновения,
+     * 
+     * причём в positions[Nparticles] и в positions[-1] лежат координаты стенок, которые не меняются.
+     *///Просто так проще было писать функцию calculateCollisions в файле helpers, которая рассчитывает столкновения.
+    const positions = new Array(Nparticles + 1);
+     
     const totalLength = document.getElementById("anime").getBoundingClientRect().width;
     if (totalLength <= Nparticles * diameter) {
-        alert("Шарики не помещаются");
+        alert("Шарики не помещаются. Попробуйте увеличить размер окна, уменьшить число шариков, уменьшить их диаметр или повернуть телефон горизонтально");
         return false;
     }
+
+    /**
+     * [number] - скорости частиц сразу после очередного столкновения,
+     * 
+     * причём velocities[Nparticles] = 0 = velocities[-1] - скорости стенок
+     *///Просто так проще было писать функцию calculateCollisions в файле helpers, которая рассчитывает столкновения.
     const velocities = new Array(Nparticles + 1);
     const between = (totalLength + diameter) / (Nparticles + 1);
 
-    function discharge() { //Сбрасывает начальные положения и скорости
+    /**
+     * Сбрасывает начальные положения и скорости
+     */
+    function discharge() {
         for (let i = -1; i < positions.length; i++) {
             positions[i] = (i + 1) * between - diameter / 2;
         }
@@ -32,14 +55,18 @@ function main(what) {
     }
 
     discharge();
+
+    /**Время, когда последний шарик начнёт двигаться*/
     const t0 = gett0(mpvdn);
+
     discharge()
 
     if (what === "anime") {
-
+        /**Время между кадрами */
         const dt = 1000 / Number(document.forms['animef'].playrate.value);
         const inversion_time = t0 * Number(document.forms['animef'].t_k_t.value);
 
+        /**positionsHistory[frame][particle] :: number */
         let positionsHistory = prepareanimation(mpvdn, dt, inversion_time);
         let anime1 = anime(positionsHistory, masses, diameter, dt);
 
@@ -82,6 +109,8 @@ function main(what) {
     }
 
     if(what === "distr"){
+
+        //Я сначала думал не делать лишнее discharge после gett0, поэтому брал v0 повторно из формы, а не как velocities[0]
         const v0 =  Number(document.forms["gen"].v_1.value)
         const Nintervals = Number(document.forms["di"].Nintervals.value)
 

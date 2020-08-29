@@ -1,3 +1,9 @@
+/**
+ * Считает симуляцию, костяк для других функций. Чтобы делать что-то полезное, в середине цикла вызывается foo
+ * @param {object} mpvdn \{masses, positions, velocities, diameter, Nparticles}
+ * @param {function} continue_condition (time) => Boolean 
+ * @param {function} [foo] (time) => {any code}
+ */
 function core_of(mpvdn, continue_condition, foo) {
     const collisions = createCollisions(mpvdn);
     let time = {
@@ -18,7 +24,15 @@ function core_of(mpvdn, continue_condition, foo) {
         updateCollisions(mpvdn, collisions, soon);
     }
 }
-
+/**
+ * @returns {number} момент, когда произойдёт столкновение такое, что следующее столкновение приведёт последний шарик в движение
+ * 
+ * Если последний шарик двигался изначально, то 0.1
+ * 
+ * Изменяет positions и velocities в mpvdn
+ * 
+ * @param {object} mpvdn \{masses, positions, velocities, diameter, Nparticles}
+ */
 function gett0(mpvdn) {
     let t = {t: 0.1}
     core_of(mpvdn,
@@ -28,6 +42,12 @@ function gett0(mpvdn) {
     return t.t.of_previous_collision;
 }
 
+/**
+ * @returns {[[number]]} positionsHistory
+ * @param {object} mpvdn \{masses, positions, velocities, diameter, Nparticles}
+ * @param {number} dt Время между кадрами в ms
+ * @param {number} when_stop 
+ */
 function prepareanimation(mpvdn, dt, when_stop) {
     const positionsHistory = [];
     core_of(mpvdn, 
@@ -36,6 +56,38 @@ function prepareanimation(mpvdn, dt, when_stop) {
     return positionsHistory;
 }
 
+/**
+ * @param {object} mpvdn \{masses, positions, velocities, diameter, Nparticles}
+ * @param {object} time имеет смысл изначально поставить вcё в 0
+ * @param {number} time.of_frame 
+ * @param {number} time.of_previous_collision
+ * @param {number} time.before_collision 
+ * @param {[[number]]} positionsHistory сюда писать будем
+ * @param {number} dt Время между кадрами
+ */
+function writeHistory(mpvdn, time, positionsHistory, dt) {
+    const positions = mpvdn.positions
+    const velocities = mpvdn.velocities
+
+    if (time.of_frame + dt < time.of_previous_collision + time.before_collision) {
+        time.of_frame += dt;
+        positionsHistory.push(positions.map((value, i) => value + (time.of_frame - time.of_previous_collision) * velocities[i])
+            .slice(0, -1)); //В positionsHistory не храним историю стенок
+    }
+
+    while (time.of_frame + dt < time.of_previous_collision + time.before_collision) {
+        time.of_frame += dt;
+        positionsHistory.push(positionsHistory[positionsHistory.length - 1].map((value, i) => value + dt * velocities[i]));
+    }
+}
+
+/**
+ * Запускает симуляцию и возвращает зависимость от времени усреднённой по времени энергии
+ * @returns {object} \{t, e1, e2} - согласованные массивы
+ * @param {object} mpvdn \{masses, positions, velocities, diameter, Nparticles}
+ * @param {number} when_stop 
+ * @param {number} deltaT Время усреднения
+ */
 function energy(mpvdn, when_stop, deltaT) {
 
     let e0 = [];

@@ -1,3 +1,7 @@
+/**
+ * @param {object} mpvdn \{masses, positions, velocities, diameter, Nparticles}
+ * @param {[number]} happened - номера столкновений, которые произошли (одновременно)
+ */
 function updateVelocities(mpvdn, happened) {
     const masses = mpvdn.masses
     const velocities = mpvdn.velocities
@@ -18,22 +22,9 @@ function updateVelocities(mpvdn, happened) {
     });
 }
 
-function writeHistory(mpvdn, time, positionsHistory, dt) {
-    const positions = mpvdn.positions
-    const velocities = mpvdn.velocities
-
-    if (time.of_frame + dt < time.of_previous_collision + time.before_collision) {
-        time.of_frame += dt;
-        positionsHistory.push(positions.map((value, i) => value + (time.of_frame - time.of_previous_collision) * velocities[i])
-            .slice(0, -1)); //В positionsHistory не храним историю стенок
-    }
-
-    while (time.of_frame + dt < time.of_previous_collision + time.before_collision) {
-        time.of_frame += dt;
-        positionsHistory.push(positionsHistory[positionsHistory.length - 1].map((value, i) => value + dt * velocities[i]));
-    }
-}
-
+/**
+ * @returns {[number]} result[i] = время до столкновения между i и i-1 шариками в предположении, что остальные шарики не успеют столкнуться с ними раньше 
+ */
 function createCollisions(mpvdn) {
     const collisions = new Array(mpvdn.Nparticles + 1);
     for (let i = 0; i < collisions.length; i++) {
@@ -54,6 +45,10 @@ function calculateCollision(mpvdn, i) {
     }
 }
 
+/**
+ * @param {[number]} collisions изменим этот массив с учётом того, что прошло время и у некоторых шариков изменилась скорость 
+ * @param {[number]} happened номера произошедших столкновений
+ */
 function updateCollisions(mpvdn, collisions, happened) {
     const deltaT = collisions[happened[0]];
     for (let i = 0; i < collisions.length; i++) {
